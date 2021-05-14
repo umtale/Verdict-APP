@@ -1,11 +1,36 @@
-import React from 'react';
-import { DrawerContentScrollView } from '@react-navigation/drawer';
-import { Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+
+interface MenuData {
+  data: {
+    path: string;
+    title: string;
+  }[];
+}
 
 export function CustomDrawerContent(props: any) {
+  const [menu, setMenu] = useState<MenuData | null>(null);
+
+  useEffect(() => {
+    fetch('https://verdict.org/api/menu/header')
+      .then((response: any) => response.json())
+      .then((json: MenuData) => setMenu(json))
+      .catch((error: any) => console.error(error));
+  }, []);
+
   return (
     <DrawerContentScrollView {...props}>
-      <Text>This is bottom text.</Text>
+      {menu?.data.map((item, index) => {
+        return (
+          <DrawerItem
+            key={index}
+            label={item.title}
+            onPress={() => {
+              props.navigation.navigate('Home', { path: item.path });
+            }}
+          />
+        );
+      })}
     </DrawerContentScrollView>
   );
 }

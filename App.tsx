@@ -30,8 +30,6 @@ const App = () => {
           initialRouteName="Home">
           <Drawer.Screen name="Home" component={HomeRoot} />
         </Drawer.Navigator>
-        {/* <ScrollView contentInsetAdjustmentBehavior="automatic">
-        </ScrollView> */}
       </NavigationContainer>
     </SafeAreaProvider>
   );

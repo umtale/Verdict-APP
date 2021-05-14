@@ -145,7 +145,6 @@
 				B158C1D619CD2C86A34413E6 /* Pods-VerdictAPP-VerdictAPPTests.debug.xcconfig */,
 				22E8C0A73B05E386E505CE79 /* Pods-VerdictAPP-VerdictAPPTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
