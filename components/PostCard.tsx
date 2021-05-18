@@ -2,50 +2,9 @@ import React from 'react';
 import Moment from 'react-moment';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import { cdnUrl } from '../helpers/url';
+import { Post } from '../types';
 
-type Post = {
-  slug: string;
-  id: string;
-  title: string;
-  status: string;
-  viewsCount: string;
-  category: {
-    slug: string;
-    id: string;
-    name: string;
-    url: string;
-  };
-  featured: {
-    id: string;
-    name: string;
-    path: string;
-    source: string;
-    size: {
-      width: number;
-      height: number;
-    };
-    url: string;
-  };
-  shortContent: string;
-  author: {
-    id: string;
-    slug: string;
-    firstName: string;
-    lastName: string;
-    follow: boolean;
-    displayName: string;
-    url: string;
-  };
-  publishedAt: string;
-  publishedAtDate: string;
-  commentsCount: number;
-  verdictValue: number;
-  verdictUpdated: boolean | null;
-  votesCount: number;
-  url: string;
-};
-
-type PoscCardProps = {
+export type PoscCardProps = {
   post: Post;
 };
 
@@ -53,7 +12,7 @@ export function PostCard({ post }: PoscCardProps) {
   const { width } = Dimensions.get('window');
 
   return (
-    <View>
+    <View style={styles.container}>
       <Image
         source={{ uri: cdnUrl(post.featured.url, width, width * 0.625) }}
         style={{ width, height: width * 0.625 }}
@@ -106,6 +65,9 @@ export function PostCard({ post }: PoscCardProps) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+  },
   content: {
     padding: 10,
   },
@@ -117,6 +79,7 @@ const styles = StyleSheet.create({
   category: {
     fontWeight: '700',
     marginBottom: 2,
+    textTransform: 'uppercase',
   },
   categoryDecoration: {
     width: 40,
