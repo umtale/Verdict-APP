@@ -27,7 +27,17 @@ export function CustomDrawerContent(props: any) {
             key={index}
             label={item.title}
             onPress={() => {
-              props.navigation.navigate('Home', { path: item.path });
+              // props.navigation.dispatch(
+              //   StackActions.push('Category', {
+              //     path: item.path,
+              //   }),
+              // );
+              props.navigation.navigate('HomeRoot', {
+                screen: 'Category',
+                key: item.path,
+                params: { path: item.path },
+                initial: false,
+              });
             }}
           />
         );
