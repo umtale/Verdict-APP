@@ -21,7 +21,6 @@ import {
 import { EventRegister } from 'react-native-event-listeners';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CustomDrawerContent } from './components/CustomDrawerContent';
-import CategoryRoot from './screens/Category';
 import HomeRoot from './screens/Home';
 
 const Drawer = createDrawerNavigator();
@@ -48,18 +47,10 @@ function Hamburger() {
 }
 
 function LogoTitle() {
-  // const navigation: any = useNavigation();
-  // const route = useRoute();
-
   return (
     <Pressable
       onPress={() => {
         EventRegister.emit('ScrollToTop');
-        // navigation.emit({
-        //   type: 'scrollToTop',
-        //   target: route.key,
-        //   canPreventDefault: false,
-        // });
       }}>
       <Image width={189} height={27} source={require('./static/logo.jpg')} />
     </Pressable>
