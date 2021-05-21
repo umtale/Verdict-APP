@@ -4,12 +4,29 @@ import { PostsList } from '../types';
 
 export function usePostsList(
   category = 'posts',
-): [PostsList | null, () => void] {
+): [PostsList | null, () => void, boolean, () => void] {
   const [posts, setPosts] = useState<PostsList | null>(null);
   const [page, setPage] = useState(1);
   const [shouldFetch, setShouldFetch] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [maxReached, setMaxReached] = useState(false);
   const fetchMore = useCallback(() => setShouldFetch(true), []);
+  const refresh = useCallback(() => {
+    setShouldFetch(false);
+    setMaxReached(false);
+    setPosts(null);
+    setShouldFetch(true);
+    setRefreshing(true);
+    return setPage(1);
+  }, []);
+
+  useEffect(() => {
+    setShouldFetch(false);
+    setMaxReached(false);
+    setPosts(null);
+    setShouldFetch(true);
+    return setPage(1);
+  }, [category]);
 
   useEffect(() => {
     if (!shouldFetch || maxReached) {
@@ -31,6 +48,8 @@ export function usePostsList(
           setMaxReached(true);
         }
 
+        setRefreshing(false);
+
         return setPosts(oldList => {
           if (oldList) {
             list.data = [...oldList.data, ...list.data];
@@ -41,7 +60,7 @@ export function usePostsList(
       });
 
     setPage(page + 1);
-  }, [category, maxReached, page, shouldFetch]);
+  }, [category, maxReached, page, shouldFetch, refreshing]);
 
-  return [posts, fetchMore];
+  return [posts, fetchMore, refreshing, refresh];
 }

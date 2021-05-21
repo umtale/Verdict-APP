@@ -75,7 +75,7 @@ export default function HomeRoot() {
 }
 
 function HomeScreen() {
-  const [posts, fetchMore] = usePostsList();
+  const [posts, fetchMore, refreshing, refresh] = usePostsList();
   const renderItem = ({ item }: { item: Post }) => {
     return <PostCard post={item} />;
   };
@@ -91,20 +91,25 @@ function HomeScreen() {
       }
     };
   });
+
   return (
     <FlatList
+      refreshing={refreshing}
+      removeClippedSubviews
       ref={ref}
       data={posts?.data}
-      keyExtractor={item => item.id}
       renderItem={renderItem}
       onEndReachedThreshold={0.8}
       onEndReached={fetchMore}
+      onRefresh={refresh}
     />
   );
 }
 
 function CategoryScreen(props: any) {
-  const [posts, fetchMore] = usePostsList(props.route.params.path);
+  const [posts, fetchMore, refreshing, refresh] = usePostsList(
+    props.route.params.path,
+  );
   const renderItem = ({ item }: { item: Post }) => {
     return <PostCard post={item} />;
   };
@@ -120,14 +125,21 @@ function CategoryScreen(props: any) {
       }
     };
   });
+
+  useEffect(() => {
+    ref.current?.scrollToOffset({ offset: 0, animated: false });
+  }, [props.route.params.path]);
+
   return (
     <FlatList
+      refreshing={refreshing}
+      removeClippedSubviews
       ref={ref}
       data={posts?.data}
-      keyExtractor={item => item.id}
       renderItem={renderItem}
       onEndReachedThreshold={0.8}
       onEndReached={fetchMore}
+      onRefresh={refresh}
     />
   );
 }

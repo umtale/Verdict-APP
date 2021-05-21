@@ -15,7 +15,7 @@ export function PostCard({ post }: PoscCardProps) {
     <View style={styles.container}>
       <Image
         source={{ uri: cdnUrl(post.featured.url, width, width * 0.625) }}
-        style={{ width, height: width * 0.625 }}
+        style={[styles.image, { width, height: width * 0.625 }]}
       />
       <View style={styles.content}>
         <View style={styles.topBar}>
@@ -70,6 +70,9 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 10,
+  },
+  image: {
+    backgroundColor: '#ddd',
   },
   topBar: {
     display: 'flex',
