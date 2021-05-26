@@ -1,6 +1,14 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import Moment from 'react-moment';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { cdnUrl } from '../helpers/url';
 import { Post } from '../types';
 
@@ -10,6 +18,7 @@ export type PoscCardProps = {
 
 export function PostCard({ post }: PoscCardProps) {
   const { width } = Dimensions.get('window');
+  const navigation: any = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -19,10 +28,18 @@ export function PostCard({ post }: PoscCardProps) {
       />
       <View style={styles.content}>
         <View style={styles.topBar}>
-          <View>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('HomeRoot', {
+                screen: 'Category',
+                key: post.category.slug,
+                params: { path: post.category.slug },
+                initial: false,
+              });
+            }}>
             <Text style={styles.category}>{post.category.name}</Text>
             <View style={styles.categoryDecoration} />
-          </View>
+          </Pressable>
           <View style={styles.counters}>
             <View style={styles.counter}>
               <Image
