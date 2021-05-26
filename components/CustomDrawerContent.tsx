@@ -27,17 +27,21 @@ export function CustomDrawerContent(props: any) {
             key={index}
             label={item.title}
             onPress={() => {
-              // props.navigation.dispatch(
-              //   StackActions.push('Category', {
-              //     path: item.path,
-              //   }),
-              // );
-              props.navigation.navigate('HomeRoot', {
-                screen: 'Category',
-                key: item.path,
-                params: { path: item.path },
-                initial: false,
-              });
+              if (item.path === 'news') {
+                props.navigation.navigate('HomeRoot', {
+                  screen: 'Home',
+                  key: item.path,
+                  params: { path: item.path },
+                  initial: false,
+                });
+              } else {
+                props.navigation.navigate('HomeRoot', {
+                  screen: 'Category',
+                  key: item.path,
+                  params: { path: item.path },
+                  initial: false,
+                });
+              }
             }}
           />
         );
