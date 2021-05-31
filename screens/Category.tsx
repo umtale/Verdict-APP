@@ -5,6 +5,7 @@ import { PostCard } from '../components/PostCard';
 import { Post } from '../types';
 import { usePostsList } from '../hooks/posts';
 import { EventRegister } from 'react-native-event-listeners';
+import PostScreen from './Post';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export default function CategoryRoot() {
         headerShown: false,
       }}>
       <Stack.Screen name="Index" component={CategoryScreen} />
+      <Stack.Screen name="Post" component={PostScreen} />
     </Stack.Navigator>
   );
 }
@@ -24,7 +26,7 @@ function CategoryScreen(props: any) {
     props.route.params.path,
   );
   const renderItem = ({ item }: { item: Post }) => {
-    return <PostCard post={item} />;
+    return <PostCard post={item} screen="CategoryRoot" />;
   };
   const ref = React.useRef<FlatList>(null);
   useEffect(() => {

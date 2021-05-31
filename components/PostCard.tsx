@@ -11,61 +11,39 @@ import {
 } from 'react-native';
 import { cdnUrl } from '../helpers/url';
 import { Post } from '../types';
+import CategoryLink from './CategoryLink';
+import PostCounters from './PostCounters';
 
-export type PoscCardProps = {
+type PoscCardProps = {
   post: Post;
+  screen: string;
 };
 
-export function PostCard({ post }: PoscCardProps) {
+export function PostCard({ post, screen }: PoscCardProps) {
+  console.log(`🚀 ~ file: PostCard.tsx ~ line 23 ~ post`, post.slug);
   const { width } = Dimensions.get('window');
   const navigation: any = useNavigation();
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: cdnUrl(post.featured.url, width, width * 0.625) }}
-        style={[styles.image, { width, height: width * 0.625 }]}
-      />
+      <Pressable
+        onPress={() => {
+          navigation.navigate(screen || 'HomeRoot', {
+            screen: 'Post',
+            key: post.slug,
+            params: { post },
+            initial: false,
+          });
+        }}>
+        <Image
+          source={{ uri: cdnUrl(post.featured.url, width, width * 0.625) }}
+          style={[styles.image, { width, height: width * 0.625 }]}
+        />
+      </Pressable>
       <View style={styles.content}>
         <View style={styles.topBar}>
-          <Pressable
-            onPress={() => {
-              navigation.navigate('CategoryRoot', {
-                screen: 'Index',
-                key: post.category.slug,
-                params: { path: post.category.slug },
-                initial: false,
-              });
-            }}>
-            <Text style={styles.category}>{post.category.name}</Text>
-            <View style={styles.categoryDecoration} />
-          </Pressable>
-          <View style={styles.counters}>
-            <View style={styles.counter}>
-              <Image
-                width={15}
-                height={15}
-                source={require('./../static/comment.png')}
-              />
-              <Text style={styles.counterText}>{post.votesCount}</Text>
-            </View>
-            <View style={styles.counter}>
-              <Image
-                width={15}
-                height={15}
-                source={require('./../static/vote.png')}
-              />
-              <Text style={styles.counterText}>{post.commentsCount}</Text>
-            </View>
-            <View style={styles.counter}>
-              <Image
-                width={15}
-                height={15}
-                source={require('./../static/eye.png')}
-              />
-              <Text style={styles.counterText}>{post.viewsCount}</Text>
-            </View>
-          </View>
+          <CategoryLink category={post.category} />
+          <PostCounters post={post} />
         </View>
         <Text style={styles.title}>{post.title}</Text>
         <View>
@@ -95,17 +73,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  category: {
-    fontWeight: '700',
-    marginBottom: 2,
-    textTransform: 'uppercase',
-  },
-  categoryDecoration: {
-    width: 40,
-    height: 3,
-    backgroundColor: '#ff4242',
-    marginBottom: 5,
   },
   counters: {
     display: 'flex',
