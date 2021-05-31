@@ -35,8 +35,8 @@ export function CustomDrawerContent(props: any) {
                   initial: false,
                 });
               } else {
-                props.navigation.navigate('HomeRoot', {
-                  screen: 'Category',
+                props.navigation.navigate('CategoryRoot', {
+                  screen: 'Index',
                   key: item.path,
                   params: { path: item.path },
                   initial: false,

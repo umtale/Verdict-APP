@@ -8,19 +8,21 @@ import { EventRegister } from 'react-native-event-listeners';
 
 const Stack = createStackNavigator();
 
-export default function HomeRoot() {
+export default function CategoryRoot() {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Index" component={CategoryScreen} />
     </Stack.Navigator>
   );
 }
 
-function HomeScreen() {
-  const [posts, fetchMore, refreshing, refresh] = usePostsList();
+function CategoryScreen(props: any) {
+  const [posts, fetchMore, refreshing, refresh] = usePostsList(
+    props.route.params.path,
+  );
   const renderItem = ({ item }: { item: Post }) => {
     return <PostCard post={item} />;
   };
@@ -36,6 +38,10 @@ function HomeScreen() {
       }
     };
   });
+
+  useEffect(() => {
+    ref.current?.scrollToOffset({ offset: 0, animated: false });
+  }, [props.route.params.path]);
 
   return (
     <FlatList

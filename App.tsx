@@ -21,6 +21,7 @@ import {
 import { EventRegister } from 'react-native-event-listeners';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CustomDrawerContent } from './components/CustomDrawerContent';
+import CategoryRoot from './screens/Category';
 import HomeRoot from './screens/Home';
 
 const Drawer = createDrawerNavigator();
@@ -70,6 +71,11 @@ const App = () => {
           <Drawer.Screen
             name="HomeRoot"
             component={HomeRoot}
+            options={headerSettings}
+          />
+          <Drawer.Screen
+            name="CategoryRoot"
+            component={CategoryRoot}
             options={headerSettings}
           />
         </Drawer.Navigator>

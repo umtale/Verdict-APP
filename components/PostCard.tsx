@@ -30,8 +30,8 @@ export function PostCard({ post }: PoscCardProps) {
         <View style={styles.topBar}>
           <Pressable
             onPress={() => {
-              navigation.navigate('HomeRoot', {
-                screen: 'Category',
+              navigation.navigate('CategoryRoot', {
+                screen: 'Index',
                 key: post.category.slug,
                 params: { path: post.category.slug },
                 initial: false,
