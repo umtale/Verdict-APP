@@ -1,11 +1,11 @@
 import React from 'react';
 import Moment from 'react-moment';
 import {
-  Dimensions,
   Image,
   Pressable,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import CategoryLink from '../components/CategoryLink';
@@ -15,7 +15,7 @@ import { useAuthor } from '../hooks/author';
 import { Post } from '../types';
 
 export default function PostScreen({ route }: any) {
-  const { width, scale } = Dimensions.get('window');
+  const window = useWindowDimensions();
   const post: Post = route.params.post;
   const [author] = useAuthor(post.author.slug);
   let authorRank = <View style={styles.authorRankLoading} />;
@@ -23,12 +23,20 @@ export default function PostScreen({ route }: any) {
 
   if (author) {
     authorRank = <Text>{author?.rank}</Text>;
-    authorAvatar = (
-      <Image
-        source={{ uri: cdnUrl(author.avatar.url, 40 * scale, 40 * scale) }}
-        style={styles.avatar}
-      />
-    );
+    if (author.avatar?.url) {
+      authorAvatar = (
+        <Image
+          source={{
+            uri: cdnUrl(
+              author.avatar.url,
+              40 * window.scale,
+              40 * window.scale,
+            ),
+          }}
+          style={styles.avatar}
+        />
+      );
+    }
   }
   // const navigation = useNavigation();
 
@@ -44,13 +52,6 @@ export default function PostScreen({ route }: any) {
         <CategoryLink category={post.category} />
         <Text style={styles.title}>{post.title}</Text>
       </View>
-      <View>
-        <Image
-          source={{ uri: cdnUrl(post.featured.url, width, width * 0.625) }}
-          style={[styles.image, { width, height: width * 0.625 }]}
-        />
-        <Text style={styles.imageSource}>source: {post.featured.source}</Text>
-      </View>
       <View style={styles.authorCard}>
         <View style={styles.author}>
           {authorAvatar}
@@ -62,22 +63,53 @@ export default function PostScreen({ route }: any) {
             </Moment>
           </View>
         </View>
-        <Pressable style={styles.button} onPress={() => {}}>
+        <Pressable
+          style={[styles.followButton, styles.button]}
+          onPress={() => {}}>
           <Text style={styles.buttonText}>Follow</Text>
         </Pressable>
       </View>
+
+      <View style={styles.imageContainer}>
+        <Image
+          source={{
+            uri: cdnUrl(post.featured.url, window.width, window.width * 0.625),
+          }}
+          style={[
+            styles.image,
+            { width: window.width, height: window.width * 0.625 },
+          ]}
+        />
+        <Text style={styles.imageSource}>source: {post.featured.source}</Text>
+      </View>
+
       <View style={styles.controls}>
         <PostCounters post={post} size={17} />
         <View style={styles.controlDivider} />
-        <Pressable style={styles.button} onPress={() => {}}>
-          <Image
-            style={styles.buttonIcon}
-            width={15}
-            height={15}
-            source={require('./../static/flag.png')}
-          />
-          <Text style={styles.buttonText}>Report</Text>
-        </Pressable>
+        <View style={styles.controlGroup}>
+          <Pressable style={styles.control} onPress={() => {}}>
+            <Image
+              style={styles.buttonIcon}
+              width={15}
+              height={15}
+              source={require('./../static/share.png')}
+            />
+            <Text style={styles.controlText}>Share</Text>
+          </Pressable>
+          <Pressable style={styles.control} onPress={() => {}}>
+            <Image
+              style={styles.buttonIcon}
+              width={15}
+              height={15}
+              source={require('./../static/flag.png')}
+            />
+            <Text style={styles.controlText}>Report</Text>
+          </Pressable>
+        </View>
+      </View>
+
+      <View>
+        <Text>Lorem ipsum dolor sit amet Article text</Text>
       </View>
     </View>
   );
@@ -101,6 +133,9 @@ const styles = StyleSheet.create({
   image: {
     backgroundColor: '#ddd',
   },
+  imageContainer: {
+    marginBottom: 20,
+  },
   imageSource: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     textAlign: 'right',
@@ -115,15 +150,19 @@ const styles = StyleSheet.create({
   authorCard: {
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     padding: 10,
-    marginBottom: 20,
   },
   author: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 20,
+    paddingBottom: 10,
+  },
+  followButton: {
+    marginBottom: 10,
   },
   authorContent: {
     paddingLeft: 10,
@@ -164,7 +203,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingBottom: 7,
+    marginBottom: 15,
+    marginHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ff4242',
+  },
+  controlGroup: {
+    flexDirection: 'row',
+  },
+  control: {
+    flexDirection: 'row',
+    marginLeft: 7,
+  },
+  controlText: {
+    color: '#ff4242',
+    textTransform: 'uppercase',
+    fontWeight: '600',
+    marginRight: 7,
   },
   controlDivider: {
     height: 15,

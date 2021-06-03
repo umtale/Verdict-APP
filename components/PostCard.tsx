@@ -2,11 +2,11 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import Moment from 'react-moment';
 import {
-  Dimensions,
   Image,
   Pressable,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { cdnUrl } from '../helpers/url';
@@ -20,8 +20,7 @@ type PoscCardProps = {
 };
 
 export function PostCard({ post, screen }: PoscCardProps) {
-  console.log(`🚀 ~ file: PostCard.tsx ~ line 23 ~ post`, post.slug);
-  const { width } = Dimensions.get('window');
+  const window = useWindowDimensions();
   const navigation: any = useNavigation();
 
   return (
@@ -36,8 +35,13 @@ export function PostCard({ post, screen }: PoscCardProps) {
           });
         }}>
         <Image
-          source={{ uri: cdnUrl(post.featured.url, width, width * 0.625) }}
-          style={[styles.image, { width, height: width * 0.625 }]}
+          source={{
+            uri: cdnUrl(post.featured.url, window.width, window.width * 0.625),
+          }}
+          style={[
+            styles.image,
+            { width: window.width, height: window.width * 0.625 },
+          ]}
         />
       </Pressable>
       <View style={styles.content}>
