@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Moment from 'react-moment';
 import {
   Image,
   Pressable,
+  Share,
   StyleSheet,
   Text,
   useWindowDimensions,
@@ -16,10 +17,21 @@ import { Post } from '../types';
 
 export default function PostScreen({ route }: any) {
   const window = useWindowDimensions();
+  const [controlsOpened, setControlsOpened] = useState(false);
   const post: Post = route.params.post;
   const [author] = useAuthor(post.author.slug);
   let authorRank = <View style={styles.authorRankLoading} />;
   let authorAvatar = <View style={styles.avatar} />;
+
+  const onShare = async () => {
+    try {
+      await Share.share({
+        title: post.title,
+        message: post.shortContent,
+        url: post.url,
+      });
+    } catch (error) {}
+  };
 
   if (author) {
     authorRank = <Text>{author?.rank}</Text>;
@@ -38,17 +50,10 @@ export default function PostScreen({ route }: any) {
       );
     }
   }
-  // const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        {/* <Pressable
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Text>Go back</Text>
-        </Pressable> */}
         <CategoryLink category={post.category} />
         <Text style={styles.title}>{post.title}</Text>
       </View>
@@ -87,7 +92,7 @@ export default function PostScreen({ route }: any) {
         <PostCounters post={post} size={17} />
         <View style={styles.controlDivider} />
         <View style={styles.controlGroup}>
-          <Pressable style={styles.control} onPress={() => {}}>
+          <Pressable style={styles.control} onPress={onShare}>
             <Image
               style={styles.buttonIcon}
               width={15}
@@ -96,20 +101,36 @@ export default function PostScreen({ route }: any) {
             />
             <Text style={styles.controlText}>Share</Text>
           </Pressable>
-          <Pressable style={styles.control} onPress={() => {}}>
+          <Pressable
+            style={styles.dropdownTrigger}
+            onPress={() => {
+              setControlsOpened(!controlsOpened);
+            }}>
             <Image
               style={styles.buttonIcon}
               width={15}
               height={15}
-              source={require('./../static/flag.png')}
+              source={require('./../static/dots.png')}
             />
-            <Text style={styles.controlText}>Report</Text>
           </Pressable>
+          {controlsOpened && (
+            <View style={[styles.dropdownMenu]}>
+              <Pressable style={styles.control} onPress={() => {}}>
+                <Image
+                  style={styles.buttonIcon}
+                  width={15}
+                  height={15}
+                  source={require('./../static/flag.png')}
+                />
+                <Text style={styles.controlText}>Report</Text>
+              </Pressable>
+            </View>
+          )}
         </View>
       </View>
 
-      <View>
-        <Text>Lorem ipsum dolor sit amet Article text</Text>
+      <View style={styles.content}>
+        <Text style={styles.contentText}>{post.shortContent}</Text>
       </View>
     </View>
   );
@@ -134,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
   },
   imageContainer: {
-    marginBottom: 20,
+    marginBottom: 7,
   },
   imageSource: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -203,11 +224,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBottom: 7,
     marginBottom: 15,
     marginHorizontal: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ff4242',
+    zIndex: 5,
   },
   controlGroup: {
     flexDirection: 'row',
@@ -215,6 +236,7 @@ const styles = StyleSheet.create({
   control: {
     flexDirection: 'row',
     marginLeft: 7,
+    paddingVertical: 10,
   },
   controlText: {
     color: '#ff4242',
@@ -224,5 +246,29 @@ const styles = StyleSheet.create({
   },
   controlDivider: {
     height: 15,
+  },
+  dropdownTrigger: {
+    paddingLeft: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dropdownMenu: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    transform: [{ translateY: 45 }],
+    borderWidth: 1,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderColor: '#ddd',
+    backgroundColor: '#fff',
+  },
+  content: {
+    paddingHorizontal: 10,
+    zIndex: 4,
+  },
+  contentText: {
+    fontSize: 18,
+    lineHeight: 25,
   },
 });
