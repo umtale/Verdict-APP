@@ -9,6 +9,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import CategoryLink from '../components/CategoryLink';
 import PostCounters from '../components/PostCounters';
 import { cdnUrl } from '../helpers/url';
@@ -52,7 +53,7 @@ export default function PostScreen({ route }: any) {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.contentContainer}>
         <CategoryLink category={post.category} />
         <Text style={styles.title}>{post.title}</Text>
@@ -132,7 +133,7 @@ export default function PostScreen({ route }: any) {
       <View style={styles.content}>
         <Text style={styles.contentText}>{post.shortContent}</Text>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
