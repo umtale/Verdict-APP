@@ -10,17 +10,19 @@ import {
   View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import blocksStyles from '../components/blocks/styles';
 import CategoryLink from '../components/CategoryLink';
+import { EditorContent } from '../components/EditorContent';
 import PostCounters from '../components/PostCounters';
 import { cdnUrl } from '../helpers/url';
-import { useAuthor } from '../hooks/author';
+import { usePost } from '../hooks/posts';
 import { Post } from '../types';
 
 export default function PostScreen({ route }: any) {
   const window = useWindowDimensions();
   const [controlsOpened, setControlsOpened] = useState(false);
   const post: Post = route.params.post;
-  const [author] = useAuthor(post.author.slug);
+  const [postData] = usePost(post.slug);
   let authorRank = <View style={styles.authorRankLoading} />;
   let authorAvatar = <View style={styles.avatar} />;
 
@@ -34,14 +36,14 @@ export default function PostScreen({ route }: any) {
     } catch (error) {}
   };
 
-  if (author) {
-    authorRank = <Text>{author?.rank}</Text>;
-    if (author.avatar?.url) {
+  if (postData?.author) {
+    authorRank = <Text>{postData?.author?.rank}</Text>;
+    if (postData?.author.avatar?.url) {
       authorAvatar = (
         <Image
           source={{
             uri: cdnUrl(
-              author.avatar.url,
+              postData?.author.avatar.url,
               40 * window.scale,
               40 * window.scale,
             ),
@@ -131,7 +133,11 @@ export default function PostScreen({ route }: any) {
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.contentText}>{post.shortContent}</Text>
+        {postData ? (
+          <EditorContent post={postData} />
+        ) : (
+          <Text style={blocksStyles.text}>{post.shortContent}</Text>
+        )}
       </View>
     </ScrollView>
   );
@@ -267,9 +273,5 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 10,
     zIndex: 4,
-  },
-  contentText: {
-    fontSize: 18,
-    lineHeight: 25,
   },
 });

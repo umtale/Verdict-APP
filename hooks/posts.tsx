@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import Config from 'react-native-config';
-import { PostsList } from '../types';
+import { PostFull, PostsList } from '../types';
 
 export function usePostsList(
   category = 'posts',
@@ -63,4 +63,20 @@ export function usePostsList(
   }, [category, maxReached, page, shouldFetch, refreshing]);
 
   return [posts, fetchMore, refreshing, refresh];
+}
+
+export function usePost(slug: string): [PostFull | null] {
+  const [post, setPost] = useState<PostFull | null>(null);
+
+  useEffect(() => {
+    let apiUrl = `${Config.API_URL}${slug}`;
+
+    fetch(apiUrl)
+      .then((response: any) => response.json())
+      .then((response: { data: PostFull; success: boolean }) => {
+        return setPost(response.data);
+      });
+  }, [slug]);
+
+  return [post];
 }

@@ -1,4 +1,13 @@
+import { ScaledSize } from 'react-native';
+
 export type Category = {
+  slug: string;
+  id: string;
+  name: string;
+  url: string;
+};
+
+export type Tag = {
   slug: string;
   id: string;
   name: string;
@@ -42,6 +51,22 @@ export type Post = {
   url: string;
 };
 
+export type PostFull = Post & {
+  verdictOption: string;
+  subtitle: string;
+  body: string;
+  bodyJson: {
+    time: number;
+    blocks: {
+      type: string;
+      data: any;
+    }[];
+    version: string;
+  };
+  tags: Tag[];
+  author: Author;
+};
+
 export type PostsList = {
   success: boolean;
   type: string;
@@ -82,4 +107,21 @@ export type Author = {
   followersCount: number;
   commentsCount: number;
   url: string;
+};
+
+export type EmbedBlock = {
+  type: string;
+  data: {
+    service: string;
+    source: string;
+    embed: string;
+    width: number;
+    height: number;
+    caption: string;
+  };
+};
+
+export type EmbedProps = {
+  window: ScaledSize;
+  block: EmbedBlock;
 };
