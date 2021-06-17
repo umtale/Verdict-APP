@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import { EmbedBlock } from '../../types';
+import EmbedFacebook from './EmbedFacebook';
+import EmbedInstagram from './EmbedInstagram';
 import EmbedTwitter from './EmbedTwitter';
 import EmbedYoutube from './EmbedYoutube';
 
@@ -24,10 +27,24 @@ export default class Embed extends Component<EmbedProps> {
         embed = <EmbedTwitter block={this.props.block} />;
         break;
 
+      case 'instagram':
+        embed = <EmbedInstagram block={this.props.block} />;
+        break;
+
+      case 'facebook':
+        embed = <EmbedFacebook block={this.props.block} />;
+        break;
+
       default:
         break;
     }
 
-    return <View>{embed}</View>;
+    return <View style={styles.container}>{embed}</View>;
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+  },
+});
