@@ -14,6 +14,8 @@ import blocksStyles from '../components/blocks/styles';
 import CategoryLink from '../components/CategoryLink';
 import { EditorContent } from '../components/EditorContent';
 import PostCounters from '../components/PostCounters';
+import PostTags from '../components/PostTags';
+import PrevNextPost from '../components/PrevNextPost';
 import { cdnUrl } from '../helpers/url';
 import { usePost } from '../hooks/posts';
 import { Post } from '../types';
@@ -91,7 +93,7 @@ export default function PostScreen({ route }: any) {
         <Text style={styles.imageSource}>source: {post.featured.source}</Text>
       </View>
 
-      <View style={styles.controls}>
+      <View style={[styles.controls, styles.topControls]}>
         <PostCounters post={post} size={17} />
         <View style={styles.controlDivider} />
         <View style={styles.controlGroup}>
@@ -139,6 +141,31 @@ export default function PostScreen({ route }: any) {
           <Text style={blocksStyles.text}>{post.shortContent}</Text>
         )}
       </View>
+
+      <View style={[styles.controls, styles.bottomControls]}>
+        <View style={styles.controlGroup}>
+          <Pressable style={styles.control} onPress={onShare}>
+            <Image
+              style={styles.buttonIcon}
+              width={15}
+              height={15}
+              source={require('./../static/share.png')}
+            />
+            <Text style={styles.controlText}>Share</Text>
+          </Pressable>
+          <Pressable style={styles.control} onPress={() => {}}>
+            <Image
+              style={styles.buttonIcon}
+              width={15}
+              height={15}
+              source={require('./../static/flag.png')}
+            />
+            <Text style={styles.controlText}>Report</Text>
+          </Pressable>
+        </View>
+      </View>
+      {postData && <PostTags post={postData} />}
+      {postData && <PrevNextPost post={postData} />}
     </ScrollView>
   );
 }
@@ -231,10 +258,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
     marginHorizontal: 10,
+  },
+  topControls: {
+    marginBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ff4242',
+    zIndex: 5,
+  },
+  bottomControls: {
+    marginTop: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#ff4242',
     zIndex: 5,
   },
   controlGroup: {

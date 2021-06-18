@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import Config from 'react-native-config';
-import { PostFull, PostsList } from '../types';
+import { Post, PostFull, PostsList } from '../types';
 
 export function usePostsList(
   category = 'posts',
@@ -73,9 +73,18 @@ export function usePost(slug: string): [PostFull | null] {
 
     fetch(apiUrl)
       .then((response: any) => response.json())
-      .then((response: { data: PostFull; success: boolean }) => {
-        return setPost(response.data);
-      });
+      .then(
+        (response: {
+          data: PostFull;
+          previous: Post;
+          next: Post;
+          success: boolean;
+        }) => {
+          response.data.previous = response.previous;
+          response.data.next = response.next;
+          return setPost(response.data);
+        },
+      );
   }, [slug]);
 
   return [post];

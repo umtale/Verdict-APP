@@ -65,6 +65,8 @@ export type PostFull = Post & {
   };
   tags: Tag[];
   author: Author;
+  previous: Post;
+  next: Post;
 };
 
 export type PostsList = {
