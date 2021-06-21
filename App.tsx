@@ -23,6 +23,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CustomDrawerContent } from './components/CustomDrawerContent';
 import CategoryRoot from './screens/Category';
 import HomeRoot from './screens/Home';
+import TagRoot from './screens/Tag';
 
 const Drawer = createDrawerNavigator();
 
@@ -76,6 +77,11 @@ const App = () => {
           <Drawer.Screen
             name="CategoryRoot"
             component={CategoryRoot}
+            options={headerSettings}
+          />
+          <Drawer.Screen
+            name="TagRoot"
+            component={TagRoot}
             options={headerSettings}
           />
         </Drawer.Navigator>

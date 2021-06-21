@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
@@ -6,6 +7,8 @@ import Button from './Button';
 import WidgetTitle from './WidgetTitle';
 
 export default function PostTags({ post }: { post: PostFull }) {
+  const navigation: any = useNavigation();
+
   return (
     <View style={styles.container}>
       <WidgetTitle text="linked" />
@@ -15,7 +18,16 @@ export default function PostTags({ post }: { post: PostFull }) {
             key={tag.id}
             style={styles.tag}
             text={tag.name}
-            pressable={{ onPress: () => {} }}
+            pressable={{
+              onPress: () => {
+                navigation.navigate('TagRoot', {
+                  screen: 'Index',
+                  key: tag.slug,
+                  params: { path: tag.slug },
+                  initial: false,
+                });
+              },
+            }}
           />
         ))}
       </View>
