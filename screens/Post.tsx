@@ -13,6 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import blocksStyles from '../components/blocks/styles';
 import CategoryLink from '../components/CategoryLink';
 import { EditorContent } from '../components/EditorContent';
+import Footer from '../components/Footer';
 import PostCounters from '../components/PostCounters';
 import PostTags from '../components/PostTags';
 import PrevNextPost from '../components/PrevNextPost';
@@ -172,6 +173,7 @@ export default function PostScreen({ route }: any) {
 
       <Related post={post} />
       <TopLatest post={post} />
+      <Footer />
     </ScrollView>
   );
 }
