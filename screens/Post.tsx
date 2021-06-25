@@ -16,6 +16,8 @@ import { EditorContent } from '../components/EditorContent';
 import PostCounters from '../components/PostCounters';
 import PostTags from '../components/PostTags';
 import PrevNextPost from '../components/PrevNextPost';
+import { Related } from '../components/Related';
+import { TopLatest } from '../components/TopLatest';
 import { cdnUrl } from '../helpers/url';
 import { usePost } from '../hooks/posts';
 import { Post } from '../types';
@@ -164,8 +166,12 @@ export default function PostScreen({ route }: any) {
           </Pressable>
         </View>
       </View>
+
       {postData && <PostTags post={postData} />}
       {postData && <PrevNextPost post={postData} />}
+
+      <Related post={post} />
+      <TopLatest post={post} />
     </ScrollView>
   );
 }

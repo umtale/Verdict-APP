@@ -59,9 +59,7 @@ export default function PrevNextPost({ post }: { post: PostFull }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 10,
-    marginTop: 10,
-    marginBottom: 50,
+    margin: 10,
   },
   link: {
     flexDirection: 'row',

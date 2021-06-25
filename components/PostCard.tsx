@@ -16,7 +16,7 @@ import PostCounters from './PostCounters';
 
 type PoscCardProps = {
   post: Post;
-  screen: string;
+  screen?: string;
 };
 
 export function PostCard({ post, screen }: PoscCardProps) {

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import Config from 'react-native-config';
+import { StyleSheet } from 'react-native';
+import Follow from './follow';
 
 interface MenuData {
   data: {
@@ -25,6 +27,8 @@ export function CustomDrawerContent(props: any) {
         return (
           <DrawerItem
             key={index}
+            style={styles.menuItem}
+            labelStyle={styles.menuItemText}
             label={item.title}
             onPress={() => {
               if (item.path === 'news') {
@@ -46,6 +50,20 @@ export function CustomDrawerContent(props: any) {
           />
         );
       })}
+      <Follow />
     </DrawerContentScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  menuItem: {
+    paddingVertical: 0,
+    marginVertical: 0,
+  },
+  menuItemText: {
+    textTransform: 'uppercase',
+    color: '#000',
+    fontWeight: '700',
+    fontSize: 18,
+  },
+});
