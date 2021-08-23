@@ -24,7 +24,11 @@ export function CustomDrawerContent(props: any) {
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.authBlock}>
-        <Pressable onPress={() => {}} style={styles.authLink}>
+        <Pressable
+          onPress={() => {
+            props.navigation.navigate('AuthModal');
+          }}
+          style={styles.authLink}>
           <View style={styles.authIconWrap}>
             <Image
               style={styles.authIcon}

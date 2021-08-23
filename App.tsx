@@ -10,6 +10,7 @@
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
   Image,
@@ -21,10 +22,12 @@ import {
 import { EventRegister } from 'react-native-event-listeners';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CustomDrawerContent } from './components/CustomDrawerContent';
+import Auth from './screens/Auth';
 import CategoryRoot from './screens/Category';
 import HomeRoot from './screens/Home';
 import TagRoot from './screens/Tag';
 
+const RootStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const headerSettings = {
@@ -59,6 +62,30 @@ function LogoTitle() {
   );
 }
 
+const baseNavigator = () => {
+  return (
+    <Drawer.Navigator
+      drawerContent={(props: any) => <CustomDrawerContent {...props} />}
+      initialRouteName="HomeRoot">
+      <Drawer.Screen
+        name="HomeRoot"
+        component={HomeRoot}
+        options={headerSettings}
+      />
+      <Drawer.Screen
+        name="CategoryRoot"
+        component={CategoryRoot}
+        options={headerSettings}
+      />
+      <Drawer.Screen
+        name="TagRoot"
+        component={TagRoot}
+        options={headerSettings}
+      />
+    </Drawer.Navigator>
+  );
+};
+
 const App = () => {
   const isDarkMode = false;
   // const isDarkMode = useColorScheme() === 'dark';
@@ -66,25 +93,22 @@ const App = () => {
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <NavigationContainer>
-        <Drawer.Navigator
-          drawerContent={(props: any) => <CustomDrawerContent {...props} />}
-          initialRouteName="HomeRoot">
-          <Drawer.Screen
-            name="HomeRoot"
-            component={HomeRoot}
-            options={headerSettings}
-          />
-          <Drawer.Screen
-            name="CategoryRoot"
-            component={CategoryRoot}
-            options={headerSettings}
-          />
-          <Drawer.Screen
-            name="TagRoot"
-            component={TagRoot}
-            options={headerSettings}
-          />
-        </Drawer.Navigator>
+        <RootStack.Navigator>
+          <RootStack.Group>
+            <RootStack.Screen
+              name="Root"
+              component={baseNavigator}
+              options={{ headerShown: false }}
+            />
+          </RootStack.Group>
+          <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+            <RootStack.Screen
+              name="AuthModal"
+              component={Auth}
+              options={{ headerShown: false }}
+            />
+          </RootStack.Group>
+        </RootStack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );
