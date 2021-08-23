@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import Moment from 'react-moment';
 import {
@@ -19,7 +19,7 @@ type PoscCardProps = {
   screen?: string;
 };
 
-export function PostCard({ post, screen }: PoscCardProps) {
+export function PostCard({ post }: PoscCardProps) {
   const window = useWindowDimensions();
   const navigation: any = useNavigation();
 
@@ -27,12 +27,10 @@ export function PostCard({ post, screen }: PoscCardProps) {
     <View style={styles.container}>
       <Pressable
         onPress={() => {
-          navigation.navigate(screen || 'HomeRoot', {
-            screen: 'Post',
-            key: post.slug,
-            params: { post },
-            initial: false,
+          const pushAction = StackActions.push('Post', {
+            post,
           });
+          navigation.dispatch(pushAction);
         }}>
         <Image
           source={{

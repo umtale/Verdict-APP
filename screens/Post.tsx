@@ -12,6 +12,7 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import blocksStyles from '../components/blocks/styles';
 import CategoryLink from '../components/CategoryLink';
+import Comments from '../components/Comments';
 import { EditorContent } from '../components/EditorContent';
 import Footer from '../components/Footer';
 import PostCounters from '../components/PostCounters';
@@ -22,11 +23,103 @@ import { TopLatest } from '../components/TopLatest';
 import { cdnUrl } from '../helpers/url';
 import { usePost } from '../hooks/posts';
 import { Post } from '../types';
+// const data = {
+//   slug: 'real-life-guardians-of-the-galaxy-announced-with-us-space-force-1758',
+//   id: '1758',
+//   verdictOption: 'AGREE/DISAGREE',
+//   title: 'Real Life “Guardians” Of The Galaxy Announced With US Space Force',
+//   subtitle: null,
+//   status: 'Published',
+//   viewsCount: '56',
+//   category: {
+//     slug: 'us',
+//     id: '10',
+//     name: 'U.S.',
+//     taxonomy: 'Category',
+//     url: 'https://verdict.org/us/',
+//   },
+//   tags: [
+//     {
+//       slug: 'united-states',
+//       id: '5766',
+//       name: 'united states',
+//       taxonomy: 'Tag',
+//       url: 'https://verdict.org/l/united-states/',
+//     },
+//     {
+//       slug: 'space-force',
+//       id: '8470',
+//       name: 'space force',
+//       taxonomy: 'Tag',
+//       url: 'https://verdict.org/l/space-force/',
+//     },
+//     {
+//       slug: 'vice-president-pence',
+//       id: '8957',
+//       name: 'vice president pence',
+//       taxonomy: 'Tag',
+//       url: 'https://verdict.org/l/vice-president-pence/',
+//     },
+//     {
+//       slug: 'gur',
+//       id: '8964',
+//       name: 'gur',
+//       taxonomy: 'Tag',
+//       url: 'https://verdict.org/l/gur/',
+//     },
+//   ],
+//   tagsSequence: null,
+//   cropData: null,
+//   featured: {
+//     id: '1912',
+//     name: '1de4d9def5e20ad857280468508c0083.jpg',
+//     path: '/uploads/2021/01/1de4d9def5e20ad857280468508c0083.jpg',
+//     source: 'Pixabay',
+//     size: { width: 460, height: 460 },
+//     url: 'https://cdn.verdict.org/uploads/2021/01/1de4d9def5e20ad857280468508c0083.jpg',
+//   },
+//   shortContent:
+//     'The United States now has its own "Guardians of the Galaxy."  No, not the type with characters such as Groot or Rocket...',
+//   author: {
+//     id: 'c9c478da-49bf-4f2b-a69f-6505a1cfef75',
+//     slug: 'tracy-few-c9c478da-49bf-4f2b-a69f-6505a1cfef75',
+//     firstName: 'Tracy',
+//     lastName: 'Few',
+//     medal: null,
+//     points: 0,
+//     rank: 'Member',
+//     avatar: {
+//       id: '135',
+//       name: '2bfcb8539109ae8ce228f702411e142b-c9c478da-49bf-4f2b-a69f-6505a1cfef75.jpg',
+//       path: '/uploads/avatar/2bfcb8539109ae8ce228f702411e142b-c9c478da-49bf-4f2b-a69f-6505a1cfef75.jpg',
+//       source: 'Tracy Few',
+//       size: { width: 460, height: 460 },
+//       url: 'https://cdn.verdict.org/uploads/avatar/2bfcb8539109ae8ce228f702411e142b-c9c478da-49bf-4f2b-a69f-6505a1cfef75.jpg',
+//     },
+//     verdictsCount: 0,
+//     postsCount: 0,
+//     followersCount: 0,
+//     commentsCount: 0,
+//     follow: false,
+//     displayName: 'Tracy Few',
+//     url: 'https://verdict.org/m/tracy-few-c9c478da-49bf-4f2b-a69f-6505a1cfef75/posts/',
+//   },
+//   publishedAt: '2020-12-18T13:23:00-05:00',
+//   publishedAtDate: '2020-12-18T18:23:00.000Z',
+//   commentsCount: 4,
+//   verdictValue: 37,
+//   verdictUpdated: '2021-01-27T04:16:31.000Z',
+//   votesCount: 27,
+//   reaction: 'DISAGREE',
+//   displayInFeed: true,
+//   url: 'https://verdict.org/real-life-guardians-of-the-galaxy-announced-with-us-space-force-1758/',
+// };
 
 export default function PostScreen({ route }: any) {
   const window = useWindowDimensions();
   const [controlsOpened, setControlsOpened] = useState(false);
   const post: Post = route.params.post;
+  // const post: Post = data;
   const [postData] = usePost(post.slug);
   let authorRank = <View style={styles.authorRankLoading} />;
   let authorAvatar = <View style={styles.avatar} />;
@@ -172,6 +265,7 @@ export default function PostScreen({ route }: any) {
       {postData && <PrevNextPost post={postData} />}
 
       <Related post={post} />
+      <Comments post={post} />
       <TopLatest post={post} />
       <Footer />
     </ScrollView>

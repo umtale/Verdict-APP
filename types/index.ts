@@ -127,3 +127,44 @@ export type EmbedProps = {
   window: ScaledSize;
   block: EmbedBlock;
 };
+
+export type Comment = {
+  id: string;
+  status: string;
+  title: string;
+  postReactionString: string;
+  postReaction: false;
+  createdAt: string;
+  isVerdict: true;
+  hasReplies: false;
+  user: {
+    id: string;
+    email: string;
+    verified: false;
+    slug: string;
+    firstName: string;
+    lastName: string;
+    medal: null;
+    avatar: null;
+    verdictsCount: number;
+    postsCount: number;
+    commentsCount: number;
+    follow: false;
+    displayName: string;
+    url: string;
+  };
+  votes: number;
+  verdictThreshold: string;
+  url: string;
+  postID: string;
+  body: string;
+};
+
+export type Pagination = {
+  next: boolean;
+  prev: boolean;
+  totalCount: number;
+  perPage: number;
+  current: number;
+  pagesCount: number;
+};
