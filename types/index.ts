@@ -168,3 +168,20 @@ export type Pagination = {
   current: number;
   pagesCount: number;
 };
+
+export type UserProfile = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  commentsCount: number;
+  postsCount: number;
+  verdictsCount: string;
+  avatar: any;
+  medal: any;
+  group: {
+    name: string;
+  };
+  url: string;
+  verified: boolean;
+};

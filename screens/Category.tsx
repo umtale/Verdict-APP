@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import { FlatList } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PostCard } from '../components/PostCard';
 import { Post } from '../types';
 import { usePostsList } from '../hooks/posts';
 import { EventRegister } from 'react-native-event-listeners';
 import PostScreen from './Post';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function CategoryRoot() {
   return (

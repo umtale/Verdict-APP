@@ -1,5 +1,6 @@
+import { AxiosResponse } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import Config from 'react-native-config';
+import Api from '../helpers/api';
 import { Post, PostFull, PostsList } from '../types';
 
 export function usePostsList(
@@ -33,7 +34,7 @@ export function usePostsList(
       return;
     }
 
-    let apiUrl = `${Config.API_URL}${category}`;
+    let apiUrl = `${category}`;
 
     if (page > 1) {
       apiUrl += `?page=${page}`;
@@ -41,23 +42,21 @@ export function usePostsList(
 
     setShouldFetch(false);
 
-    fetch(apiUrl)
-      .then((response: any) => response.json())
-      .then((list: PostsList) => {
-        if (list.pagination.pagesCount === page) {
-          setMaxReached(true);
+    Api.get(apiUrl).then((response: AxiosResponse<PostsList>) => {
+      if (response.data.pagination.pagesCount === page) {
+        setMaxReached(true);
+      }
+
+      setRefreshing(false);
+
+      return setPosts(oldList => {
+        if (oldList) {
+          response.data.data = [...oldList.data, ...response.data.data];
         }
 
-        setRefreshing(false);
-
-        return setPosts(oldList => {
-          if (oldList) {
-            list.data = [...oldList.data, ...list.data];
-          }
-
-          return list;
-        });
+        return response.data;
       });
+    });
 
     setPage(page + 1);
   }, [category, maxReached, page, shouldFetch, refreshing]);
@@ -69,22 +68,21 @@ export function usePost(slug: string): [PostFull | null] {
   const [post, setPost] = useState<PostFull | null>(null);
 
   useEffect(() => {
-    let apiUrl = `${Config.API_URL}${slug}`;
-
-    fetch(apiUrl)
-      .then((response: any) => response.json())
-      .then(
-        (response: {
+    let apiUrl = `${slug}`;
+    Api.get(apiUrl).then(
+      (
+        response: AxiosResponse<{
           data: PostFull;
           previous: Post;
           next: Post;
           success: boolean;
-        }) => {
-          response.data.previous = response.previous;
-          response.data.next = response.next;
-          return setPost(response.data);
-        },
-      );
+        }>,
+      ) => {
+        response.data.data.previous = response.data.previous;
+        response.data.data.next = response.data.next;
+        return setPost(response.data.data);
+      },
+    );
   }, [slug]);
 
   return [post];

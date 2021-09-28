@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import Config from 'react-native-config';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Follow from './follow';
+import { AuthMenu } from './AuthMenu';
 
 interface MenuData {
   data: {
@@ -23,23 +24,7 @@ export function CustomDrawerContent(props: any) {
 
   return (
     <DrawerContentScrollView {...props}>
-      <View style={styles.authBlock}>
-        <Pressable
-          onPress={() => {
-            props.navigation.navigate('AuthModal');
-          }}
-          style={styles.authLink}>
-          <View style={styles.authIconWrap}>
-            <Image
-              style={styles.authIcon}
-              width={15}
-              height={15}
-              source={require('./../static/user.png')}
-            />
-          </View>
-          <Text style={styles.authText}>Login / Register</Text>
-        </Pressable>
-      </View>
+      <AuthMenu />
       {menu?.data.map((item, index) => {
         return (
           <DrawerItem
@@ -82,32 +67,5 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: '700',
     fontSize: 18,
-  },
-  authBlock: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
-    marginBottom: 10,
-  },
-  authLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 7,
-    padding: 10,
-  },
-  authText: {
-    fontSize: 16,
-    textTransform: 'uppercase',
-    fontWeight: '700',
-    color: '#696969',
-  },
-  authIconWrap: {
-    borderWidth: 1,
-    borderRadius: 30,
-    borderColor: '#696969',
-    padding: 7,
-    marginRight: 7,
-  },
-  authIcon: {
-    opacity: 0.5,
   },
 });
