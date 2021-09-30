@@ -28,6 +28,20 @@ const AuthContext = createContext<GlobalAuthState>({
 const AuthProvider = ({ children }: any) => {
   const [auth, setAuthState] = useState<AuthData | null>(null);
 
+  Api.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    function (error) {
+      if (error.response.status === 401 && auth?.token) {
+        setAuth(null);
+      }
+      // Any status codes that falls outside the range of 2xx cause this function to trigger
+      // Do something with response error
+      return Promise.reject(error);
+    },
+  );
+
   // Get current auth state from AsyncStorage
   const getAuthState = async () => {
     try {

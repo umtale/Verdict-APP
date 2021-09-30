@@ -84,6 +84,30 @@ const baseNavigator = () => {
         component={TagRoot}
         options={headerSettings}
       />
+    </Drawer.Navigator>
+  );
+};
+
+const baseNavigatorLoggedIn = () => {
+  return (
+    <Drawer.Navigator
+      drawerContent={(props: any) => <CustomDrawerContent {...props} />}
+      initialRouteName="HomeRoot">
+      <Drawer.Screen
+        name="HomeRoot"
+        component={HomeRoot}
+        options={headerSettings}
+      />
+      <Drawer.Screen
+        name="CategoryRoot"
+        component={CategoryRoot}
+        options={headerSettings}
+      />
+      <Drawer.Screen
+        name="TagRoot"
+        component={TagRoot}
+        options={headerSettings}
+      />
       <Drawer.Screen
         name="ProfileRoot"
         component={ProfileRoot}
@@ -106,7 +130,7 @@ const AppArea = () => {
             <RootStack.Group>
               <RootStack.Screen
                 name="Root"
-                component={baseNavigator}
+                component={baseNavigatorLoggedIn}
                 options={{ headerShown: false }}
               />
             </RootStack.Group>

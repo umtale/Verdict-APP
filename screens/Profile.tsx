@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useProfile } from '../hooks/profile';
 import { cdnUrl } from '../helpers/url';
 
@@ -19,6 +19,7 @@ export default function ProfileRoot() {
 
 function ProfileHome() {
   const [profile] = useProfile();
+  console.log(`🚀 ~ file: Profile.tsx ~ line 22 ~ profile`, profile);
 
   return (
     <View style={styles.container}>
@@ -39,6 +40,71 @@ function ProfileHome() {
           {profile?.firstName} {profile?.lastName}
         </Text>
       </View>
+      <View style={styles.navigationContainer}>
+        <Pressable style={styles.navLink}>
+          <Image
+            style={styles.navLinkIcon}
+            width={18}
+            height={18}
+            source={require('./../static/posts.png')}
+          />
+          <Text style={styles.navLinkText}>Posts</Text>
+        </Pressable>
+        <Pressable style={styles.navLink}>
+          <Image
+            style={styles.navLinkIcon}
+            width={18}
+            height={18}
+            source={require('./../static/comments.png')}
+          />
+          <Text style={styles.navLinkText}>Comments</Text>
+        </Pressable>
+        <Pressable style={styles.navLink}>
+          <Image
+            style={styles.navLinkIcon}
+            width={18}
+            height={18}
+            source={require('./../static/bookmarks.png')}
+          />
+          <Text style={styles.navLinkText}>Bookmarks</Text>
+        </Pressable>
+        <Pressable style={styles.navLink}>
+          <Image
+            style={styles.navLinkIcon}
+            width={18}
+            height={18}
+            source={require('./../static/followers.png')}
+          />
+          <Text style={styles.navLinkText}>Followers</Text>
+        </Pressable>
+        <Pressable style={styles.navLink}>
+          <Image
+            style={styles.navLinkIcon}
+            width={18}
+            height={18}
+            source={require('./../static/following.png')}
+          />
+          <Text style={styles.navLinkText}>Following</Text>
+        </Pressable>
+        <Pressable style={styles.navLink}>
+          <Image
+            style={styles.navLinkIcon}
+            width={18}
+            height={18}
+            source={require('./../static/notiffications.png')}
+          />
+          <Text style={styles.navLinkText}>Notifications</Text>
+        </Pressable>
+        <Pressable style={styles.navLink}>
+          <Image
+            style={styles.navLinkIcon}
+            width={18}
+            height={18}
+            source={require('./../static/settings.png')}
+          />
+          <Text style={styles.navLinkText}>Settings</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -51,6 +117,7 @@ const styles = StyleSheet.create({
   topContainer: {
     alignItems: 'center',
     paddingTop: 35,
+    marginBottom: 20,
   },
   avatar: {
     borderWidth: 2,
@@ -70,5 +137,24 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: '700',
     fontSize: 25,
+  },
+  navigationContainer: {
+    padding: 10,
+  },
+  navLink: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+  },
+  navLinkIcon: {
+    marginRight: 6,
+  },
+  navLinkText: {
+    textTransform: 'uppercase',
+    fontWeight: '700',
+    fontSize: 18,
+    color: '#1c1c1c',
   },
 });
