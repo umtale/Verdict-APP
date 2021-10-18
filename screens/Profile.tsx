@@ -3,6 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useProfile } from '../hooks/profile';
 import { cdnUrl } from '../helpers/url';
+import ProfilePosts from './profile/Posts';
+import { useNavigation } from '@react-navigation/core';
+import ProfileSettings from './profile/Settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,13 +16,15 @@ export default function ProfileRoot() {
         headerShown: false,
       }}>
       <Stack.Screen name="ProfileHome" component={ProfileHome} />
+      <Stack.Screen name="ProfilePosts" component={ProfilePosts} />
+      <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
     </Stack.Navigator>
   );
 }
 
 function ProfileHome() {
   const [profile] = useProfile();
-  console.log(`🚀 ~ file: Profile.tsx ~ line 22 ~ profile`, profile);
+  const navigation: any = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -41,7 +46,13 @@ function ProfileHome() {
         </Text>
       </View>
       <View style={styles.navigationContainer}>
-        <Pressable style={styles.navLink}>
+        <Pressable
+          style={styles.navLink}
+          onPress={() => {
+            navigation.navigate('ProfileRoot', {
+              screen: 'ProfilePosts',
+            });
+          }}>
           <Image
             style={styles.navLinkIcon}
             width={18}
@@ -95,7 +106,13 @@ function ProfileHome() {
           />
           <Text style={styles.navLinkText}>Notifications</Text>
         </Pressable>
-        <Pressable style={styles.navLink}>
+        <Pressable
+          style={styles.navLink}
+          onPress={() => {
+            navigation.navigate('ProfileRoot', {
+              screen: 'ProfileSettings',
+            });
+          }}>
           <Image
             style={styles.navLinkIcon}
             width={18}
@@ -103,6 +120,15 @@ function ProfileHome() {
             source={require('./../static/settings.png')}
           />
           <Text style={styles.navLinkText}>Settings</Text>
+        </Pressable>
+        <Pressable style={styles.navLink}>
+          <Image
+            style={styles.navLinkIcon}
+            width={18}
+            height={18}
+            source={require('./../static/sign-out.png')}
+          />
+          <Text style={styles.navLinkText}>Logout</Text>
         </Pressable>
       </View>
     </View>

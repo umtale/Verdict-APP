@@ -32,6 +32,7 @@
     "react-native-encrypted-storage": "^4.0.2",
     "react-native-event-listeners": "^1.0.7",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-phone-number-input": "^2.1.0",
     "react-native-reanimated": "^2.1.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.2.0",

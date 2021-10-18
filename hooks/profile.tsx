@@ -11,9 +11,7 @@ export function useProfile(): [UserProfile | null] {
       .then((response: AxiosResponse<UserProfile>) => {
         return setProfile(response.data);
       })
-      .catch(error => {
-        console.log('🚀 ~ file: profile.tsx ~ line 14 ~ error', error);
-      });
+      .catch(_error => {});
   }, []);
 
   return [profile];

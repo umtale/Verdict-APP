@@ -68,6 +68,7 @@ export function usePost(slug: string): [PostFull | null] {
   const [post, setPost] = useState<PostFull | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
     let apiUrl = `${slug}`;
     Api.get(apiUrl).then(
       (
@@ -80,9 +81,16 @@ export function usePost(slug: string): [PostFull | null] {
       ) => {
         response.data.data.previous = response.data.previous;
         response.data.data.next = response.data.next;
-        return setPost(response.data.data);
+
+        if (isMounted) {
+          setPost(response.data.data);
+        }
       },
     );
+
+    return () => {
+      isMounted = false;
+    };
   }, [slug]);
 
   return [post];

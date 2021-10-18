@@ -9,4 +9,7 @@ export const globalStyles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 15,
   },
+  textarea: {
+    minHeight: 58,
+  },
 });

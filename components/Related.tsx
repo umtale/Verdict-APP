@@ -15,10 +15,20 @@ export function Related({ post }: RelatedProps) {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
+    let isMounted = true;
+
     fetch(`${Config.API_URL}posts/${post.slug}/related`)
       .then((response: any) => response.json())
-      .then((json: { data: Post[] }) => setPosts(json.data))
+      .then((json: { data: Post[] }) => {
+        if (isMounted) {
+          setPosts(json.data);
+        }
+      })
       .catch((error: any) => console.error(error));
+
+    return () => {
+      isMounted = false;
+    };
   }, [post.slug]);
 
   return (

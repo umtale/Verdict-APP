@@ -15,12 +15,21 @@ export function TopLatest({ post }: TopLatestProps) {
   const [type, setType] = useState('top');
 
   useEffect(() => {
+    let isMounted = true;
     fetch(
       `${Config.API_URL}posts/query/sidebar?termSlug=${post.category.slug}&type=${type}`,
     )
       .then((response: any) => response.json())
-      .then((json: { data: Post[] }) => setPosts(json.data))
+      .then((json: { data: Post[] }) => {
+        if (isMounted) {
+          setPosts(json.data);
+        }
+      })
       .catch((error: any) => console.error(error));
+
+    return () => {
+      isMounted = false;
+    };
   }, [post.category.slug, type]);
 
   return (
