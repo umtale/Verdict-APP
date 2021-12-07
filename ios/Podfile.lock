@@ -257,6 +257,8 @@ PODS:
     - React-Core
   - react-native-encrypted-storage (4.0.2):
     - React-Core
+  - react-native-image-picker (4.4.0):
+    - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-webview (11.6.2):
@@ -391,6 +393,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-encrypted-storage (from `../node_modules/react-native-encrypted-storage`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -464,6 +467,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-config"
   react-native-encrypted-storage:
     :path: "../node_modules/react-native-encrypted-storage"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-webview:
@@ -536,6 +541,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-encrypted-storage: e78d848ce0fb663c2ce306e37921d026809322e6
+  react-native-image-picker: 14910ea6b6a38bd45d1a69cb643b157e6ac142cb
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-webview: 193d233c29eacce1f42ca2637dab7ba79c25a6de
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af

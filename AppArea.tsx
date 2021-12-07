@@ -23,6 +23,7 @@ import { EventRegister } from 'react-native-event-listeners';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthContext } from './AuthProvider';
 import { CustomDrawerContent } from './components/CustomDrawerContent';
+import AddPost from './screens/AddPost';
 import Auth from './screens/Auth';
 import CategoryRoot from './screens/Category';
 import HomeRoot from './screens/Home';
@@ -82,6 +83,11 @@ const baseNavigator = () => {
       <Drawer.Screen
         name="TagRoot"
         component={TagRoot}
+        options={headerSettings}
+      />
+      <Drawer.Screen
+        name="AddPost"
+        component={AddPost}
         options={headerSettings}
       />
     </Drawer.Navigator>

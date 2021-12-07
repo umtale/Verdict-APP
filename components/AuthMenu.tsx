@@ -40,6 +40,16 @@ export function AuthMenu() {
             <Text style={styles.authText}>Logout</Text>
           </Pressable>
         )}
+        <Pressable
+          onPress={() => {
+            navigation.navigate('Root', {
+              screen: 'AddPost',
+              initial: false,
+            });
+          }}
+          style={styles.authLink}>
+          <Text style={styles.authText}>add post</Text>
+        </Pressable>
       </View>
     </View>
   );

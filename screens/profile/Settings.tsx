@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import PhoneInput from 'react-native-phone-number-input';
 import AvatarUpload from '../../components/AvatarUpload';
