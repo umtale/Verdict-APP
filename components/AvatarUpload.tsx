@@ -1,16 +1,38 @@
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
 import Button from './Button';
 
 export default function AvatarUpload(props: {
   // options: RadioOptions;
   onChange?: (key: string | number) => void;
 }) {
+  const onPress = () => {
+    let options: ImageLibraryOptions = {
+      mediaType: 'photo',
+    };
+
+    launchImageLibrary(options).then(result => {
+      if (result.assets) {
+        result.assets.forEach(asset => {
+          // richText.current?.insertImage(
+          //   'https://cdn.verdict.org/uploads/2021/11/396cf2cf3dff4ab7447998e438485c65.jpg?format=webp%2Cjpg&w=1626',
+          //   'background: gray;',
+          // );
+          console.log(`🚀 ~ file: AvatarUpload.tsx ~ line 26 ~ asset`, asset);
+        });
+      }
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.preview} />
       <View style={styles.buttons}>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={onPress}>
           <Text style={styles.buttonText}>Upload new</Text>
         </Pressable>
         <Pressable>
