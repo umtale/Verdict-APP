@@ -5,7 +5,7 @@ import { useProfile } from '../hooks/profile';
 import { cdnUrl } from '../helpers/url';
 import ProfilePosts from './profile/Posts';
 import { useNavigation } from '@react-navigation/core';
-import ProfileSettings from './profile/Settings';
+import { ProfileSettings } from './profile/Settings';
 
 const Stack = createNativeStackNavigator();
 

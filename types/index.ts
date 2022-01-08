@@ -170,18 +170,47 @@ export type Pagination = {
 };
 
 export type UserProfile = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  commentsCount: number;
-  postsCount: number;
-  verdictsCount: string;
-  avatar: any;
-  medal: any;
-  group: {
+  avatar: {
+    id: number;
     name: string;
+    path: string;
+    size: {
+      height: number;
+      width: number;
+    };
+    source: string;
+    url: string;
   };
+  bio: string;
+  categories: [];
+  commentsCount: number;
+  countryCode: number;
+  countryCodeLetters: string;
+  createdAt: string;
+  email: string;
+  facebookLink: string;
+  firstName: string;
+  followersCount: number;
+  id: string;
+  lastName: string;
+  linkedinLink: string;
+  medal: any;
+  phone: string;
+  points: number;
+  postsCount: number;
+  rank: string;
+  settings: {
+    email_post_published: string;
+    email_post_replies: string;
+    email_recive_point: string;
+    email_user_follow: string;
+    email_verdict_replies: string;
+    email_visibility: string;
+    profile_visibility: string;
+  };
+  slug: string;
+  twitterLink: string;
   url: string;
+  verdictsCount: number;
   verified: boolean;
 };
