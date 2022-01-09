@@ -55,7 +55,6 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
 
   render() {
     const phoneUtil = PhoneNumberUtil.getInstance();
-    // const phoneInput = useRef<PhoneInput>(null);
     if (this.state.loading) {
       return <View />;
     }
@@ -114,6 +113,17 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         <RadioButton
           options={{ '1': 'public', '0': 'private' }}
           value={this.state.data.settings.profile_visibility}
+          onChange={(value: any) => {
+            this.setState({
+              data: {
+                ...this.state.data,
+                settings: {
+                  ...this.state.data.settings,
+                  profile_visibility: value,
+                },
+              },
+            });
+          }}
         />
         <Text style={styles.sectionTitle}>Security</Text>
         <Text style={styles.label}>Phone</Text>
@@ -173,6 +183,7 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
           Send me notifications when someone replies to my post
         </Text>
         <RadioButton
+          value={this.state.data.settings.email_post_replies}
           options={{
             '1': 'immediately',
             '2': 'daily',
@@ -182,6 +193,7 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         />
         <Text style={styles.label}>someone replies to my verdict/reply</Text>
         <RadioButton
+          value={this.state.data.settings.email_verdict_replies}
           options={{
             '1': 'immediately',
             '2': 'daily',
@@ -191,6 +203,7 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         />
         <Text style={styles.label}>someone follows me</Text>
         <RadioButton
+          value={this.state.data.settings.email_user_follow}
           options={{
             '1': 'immediately',
             '2': 'daily',
@@ -200,6 +213,7 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         />
         <Text style={styles.label}>my post is published</Text>
         <RadioButton
+          value={this.state.data.settings.email_post_published}
           options={{
             '1': 'immediately',
             '2': 'daily',
@@ -209,6 +223,7 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         />
         <Text style={styles.label}>gained V-rep</Text>
         <RadioButton
+          value={this.state.data.settings.email_recive_point}
           options={{
             '1': 'immediately',
             '2': 'daily',

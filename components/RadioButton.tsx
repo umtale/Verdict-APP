@@ -11,7 +11,6 @@ export default function RadioButton(props: {
   onChange?: (key: string | number) => void;
 }) {
   const [state, setState] = useState<string | number | undefined>(props.value);
-  console.log(`🚀 ~ file: RadioButton.tsx ~ line 14 ~ props.value`, props.value);
   const options = [];
 
   for (const key in props.options) {
