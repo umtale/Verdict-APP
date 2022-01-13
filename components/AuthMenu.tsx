@@ -13,7 +13,7 @@ export function AuthMenu() {
         <Pressable
           onPress={() => {
             if (auth) {
-              navigation.navigate('ProfileRoot');
+              navigation.navigate('ProfileRoot', { screen: 'ProfileHome' });
             } else {
               navigation.navigate('AuthModal');
             }

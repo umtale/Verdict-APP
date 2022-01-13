@@ -3,6 +3,7 @@ import {
   Animated,
   Easing,
   Image,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -12,24 +13,33 @@ import {
   ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker';
+import Api from '../helpers/api';
+import { cdnUrl } from '../helpers/url';
 
 interface AvatarUploadState {
   loading: boolean;
   url?: string;
+  value?: string;
+}
+interface AvatarUploadProps {
+  value?: string;
 }
 
 export default class AvatarUpload extends React.Component<
-  {},
+  AvatarUploadProps,
   AvatarUploadState
 > {
   private rotateValue;
 
-  constructor(props: any) {
+  constructor(props: AvatarUploadProps) {
     super(props);
+    const avatar = props.value || 'assets/img/default/default-avatar-big.png';
     this.state = {
-      loading: true,
-      url: '',
+      loading: false,
+      value: props.value,
+      url: cdnUrl(avatar, 86, 86),
     };
+
     this.rotateValue = new Animated.Value(0);
   }
 
@@ -45,13 +55,27 @@ export default class AvatarUpload extends React.Component<
     launchImageLibrary(options).then(result => {
       if (result.assets) {
         result.assets.forEach(asset => {
-          this.setState({ url: asset.uri });
-          this.setState({ loading: false });
-          // richText.current?.insertImage(
-          //   'https://cdn.verdict.org/uploads/2021/11/396cf2cf3dff4ab7447998e438485c65.jpg?format=webp%2Cjpg&w=1626',
-          //   'background: gray;',
-          // );
-          console.log('🚀 ~ file: AvatarUpload.tsx ~ line 26 ~ asset', asset);
+          if (asset.uri) {
+            this.setState({ url: asset.uri, loading: true });
+            this._startAnimation();
+            const data = new FormData();
+            data.append('avatar', {
+              name: asset.fileName,
+              type: asset.type,
+              uri:
+                Platform.OS === 'ios'
+                  ? asset.uri?.replace('file://', '')
+                  : asset.uri,
+            });
+
+            Api.put('profile/update-avatar', data).then(response => {
+              this.setState({ loading: false, value: asset.uri });
+              console.log(
+                '🚀 ~ file: AvatarUpload.tsx ~ line 65 ~ response',
+                response.data,
+              );
+            });
+          }
         });
       }
     });
@@ -62,7 +86,6 @@ export default class AvatarUpload extends React.Component<
   }
 
   _startAnimation() {
-    // this.setState({ loading: true });
     this._rotateValue(0);
     Animated.timing(this.rotateValue, {
       toValue: 1,
@@ -72,18 +95,32 @@ export default class AvatarUpload extends React.Component<
     }).start(() => {
       if (this.state.loading) {
         this._startAnimation();
-      } else {
-        // this.didAnimation = false;
       }
     });
   }
 
-  render() {
+  deleteAvatar() {
+    this.setState({ loading: true });
     this._startAnimation();
+
+    Api.post('profile/remove-avatar', {}).then(response => {
+      this.setState({
+        loading: false,
+        value: undefined,
+        url: cdnUrl('assets/img/default/default-avatar-big.png', 86, 86),
+      });
+      console.log(
+        '🚀 ~ file: AvatarUpload.tsx ~ line 65 ~ response',
+        response.data,
+      );
+    });
+  }
+
+  render() {
     return (
       <View style={styles.container}>
         <View style={styles.preview}>
-          {!!this.state.loading && (
+          {this.state.loading && (
             <Animated.View
               style={{
                 ...styles.loader,
@@ -111,9 +148,11 @@ export default class AvatarUpload extends React.Component<
           <Pressable style={styles.button} onPress={this.onPress.bind(this)}>
             <Text style={styles.buttonText}>Upload new</Text>
           </Pressable>
-          <Pressable>
-            <Text style={styles.removeButtonText}>Remove</Text>
-          </Pressable>
+          {!!this.state.value && (
+            <Pressable onPress={this.deleteAvatar.bind(this)}>
+              <Text style={styles.removeButtonText}>Remove</Text>
+            </Pressable>
+          )}
         </View>
       </View>
     );
@@ -137,8 +176,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   previewImage: {
-    width: 90,
-    height: 90,
+    width: 86,
+    height: 86,
     zIndex: 1,
   },
   buttons: {

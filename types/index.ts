@@ -170,7 +170,7 @@ export type Pagination = {
 };
 
 export type UserProfile = {
-  avatar: {
+  avatar?: {
     id: number;
     name: string;
     path: string;

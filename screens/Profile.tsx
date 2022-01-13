@@ -33,7 +33,8 @@ function ProfileHome() {
           <Image
             source={{
               uri: cdnUrl(
-                'assets/img/default/default-avatar-big.png',
+                profile?.avatar?.path ||
+                  'assets/img/default/default-avatar-big.png',
                 150,
                 150,
               ),

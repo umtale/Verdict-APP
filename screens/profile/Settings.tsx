@@ -22,6 +22,7 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
     this.state = {
       loading: true,
       data: {
+        avatar: undefined,
         email: '',
         firstName: '',
         lastName: '',
@@ -66,7 +67,7 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
 
     return (
       <ScrollView style={styles.container}>
-        <AvatarUpload />
+        <AvatarUpload value={this.state.data.avatar?.path} />
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={globalStyles.input}
