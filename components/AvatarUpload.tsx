@@ -23,6 +23,8 @@ interface AvatarUploadState {
 }
 interface AvatarUploadProps {
   value?: string;
+  onUploadSuccess?: () => void;
+  onDelete?: () => void;
 }
 
 export default class AvatarUpload extends React.Component<
@@ -68,12 +70,12 @@ export default class AvatarUpload extends React.Component<
                   : asset.uri,
             });
 
-            Api.put('profile/update-avatar', data).then(response => {
+            Api.put('profile/update-avatar', data).then(() => {
               this.setState({ loading: false, value: asset.uri });
-              console.log(
-                '🚀 ~ file: AvatarUpload.tsx ~ line 65 ~ response',
-                response.data,
-              );
+
+              if (this.props.onUploadSuccess) {
+                this.props.onUploadSuccess();
+              }
             });
           }
         });

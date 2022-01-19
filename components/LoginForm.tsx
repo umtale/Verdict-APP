@@ -5,12 +5,13 @@ import React, { useContext, useState } from 'react';
 import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Config from 'react-native-config';
 import { TextInput } from 'react-native-gesture-handler';
-import { AuthContext, AuthData } from '../AuthProvider';
 import Button from '../components/Button';
+import AppContext from '../context/context';
 import { globalStyles } from '../helpers/globalStyles';
+import { AuthData } from '../types';
 
 export default function LoginForm() {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useContext(AppContext);
   const navigation = useNavigation();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');

@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { AuthContext } from '../AuthProvider';
+import AppContext from '../context/context';
 
 export function AuthMenu() {
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AppContext);
   const navigation: any = useNavigation();
 
   return (

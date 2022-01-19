@@ -42,14 +42,13 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
       },
     };
 
+    this.loadProfile();
+  }
+
+  loadProfile() {
     Api.get('profile/full', { data: null })
       .then((response: AxiosResponse<{ data: UserProfile }>) => {
-        this.setState({ data: response.data.data });
-        // console.log(
-        //   '🚀 ~ file: Settings.tsx ~ line 46 ~ response.data.data',
-        //   response.data.data,
-        // );
-        this.setState({ loading: false });
+        this.setState({ data: response.data.data, loading: false });
       })
       .catch(_error => {});
   }
@@ -67,7 +66,10 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
 
     return (
       <ScrollView style={styles.container}>
-        <AvatarUpload value={this.state.data.avatar?.path} />
+        <AvatarUpload
+          value={this.state.data.avatar?.path}
+          onUploadSuccess={this.loadProfile.bind(this)}
+        />
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={globalStyles.input}

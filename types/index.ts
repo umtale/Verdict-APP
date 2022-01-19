@@ -214,3 +214,14 @@ export type UserProfile = {
   verdictsCount: number;
   verified: boolean;
 };
+
+export type AuthData = {
+  exp: number;
+  iat: number;
+  type: string;
+  userId: string;
+  userRole: string;
+  username: string;
+  token: string;
+  refreshToken: string;
+};

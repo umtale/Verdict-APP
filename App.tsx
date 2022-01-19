@@ -9,13 +9,13 @@
  */
 import React from 'react';
 import AppArea from './AppArea';
-import { AuthProvider } from './AuthProvider';
+import GlobalState from './context/GlobalState';
 
 const App = () => {
   return (
-    <AuthProvider>
+    <GlobalState>
       <AppArea />
-    </AuthProvider>
+    </GlobalState>
   );
 };
 

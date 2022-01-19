@@ -6,6 +6,9 @@ import { cdnUrl } from '../helpers/url';
 import ProfilePosts from './profile/Posts';
 import { useNavigation } from '@react-navigation/core';
 import { ProfileSettings } from './profile/Settings';
+import { AxiosResponse } from 'axios';
+import Api from '../helpers/api';
+import { UserProfile } from '../types';
 
 const Stack = createNativeStackNavigator();
 

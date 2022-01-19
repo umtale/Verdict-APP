@@ -23,6 +23,8 @@ import { EventRegister } from 'react-native-event-listeners';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthContext } from './AuthProvider';
 import { CustomDrawerContent } from './components/CustomDrawerContent';
+import AppContext from './context/context';
+import GlobalState from './context/GlobalState';
 import AddPost from './screens/AddPost';
 import Auth from './screens/Auth';
 import CategoryRoot from './screens/Category';
@@ -123,46 +125,59 @@ const baseNavigatorLoggedIn = () => {
   );
 };
 
-const AppArea = () => {
-  const { auth } = useContext(AuthContext);
-  const isDarkMode = false;
-  // const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NavigationContainer>
-        <RootStack.Navigator>
-          {auth?.token ? (
-            <RootStack.Group>
-              <RootStack.Screen
-                name="Root"
-                component={baseNavigatorLoggedIn}
-                options={{ headerShown: false }}
-              />
-            </RootStack.Group>
-          ) : (
-            <>
+// const AppArea = () => {
+//   const { auth } = useContext(AuthContext);
+//   // const isDarkMode = useColorScheme() === 'dark';
+// };
+
+export default class AppArea extends React.Component {
+  static contextType = AppContext;
+
+  constructor(props: any) {
+    super(props);
+  }
+
+  render() {
+    const isDarkMode = false;
+    const { auth } = this.context;
+
+    return (
+      <SafeAreaProvider>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <NavigationContainer>
+          <RootStack.Navigator>
+            {auth?.token ? (
               <RootStack.Group>
                 <RootStack.Screen
                   name="Root"
-                  component={baseNavigator}
+                  component={baseNavigatorLoggedIn}
                   options={{ headerShown: false }}
                 />
               </RootStack.Group>
-              <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-                <RootStack.Screen
-                  name="AuthModal"
-                  component={Auth}
-                  options={{ headerShown: false }}
-                />
-              </RootStack.Group>
-            </>
-          )}
-        </RootStack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
-  );
-};
+            ) : (
+              <>
+                <RootStack.Group>
+                  <RootStack.Screen
+                    name="Root"
+                    component={baseNavigator}
+                    options={{ headerShown: false }}
+                  />
+                </RootStack.Group>
+                <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+                  <RootStack.Screen
+                    name="AuthModal"
+                    component={Auth}
+                    options={{ headerShown: false }}
+                  />
+                </RootStack.Group>
+              </>
+            )}
+          </RootStack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -173,4 +188,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppArea;
+// export default AppArea;
