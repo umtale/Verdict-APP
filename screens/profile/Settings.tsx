@@ -314,8 +314,6 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
   }
 }
 
-export default function ProfileSettingsas() {}
-
 const styles = StyleSheet.create({
   container: {
     padding: 15,
