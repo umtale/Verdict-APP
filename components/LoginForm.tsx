@@ -13,8 +13,8 @@ import { AuthData } from '../types';
 export default function LoginForm() {
   const { setAuth } = useContext(AppContext);
   const navigation = useNavigation();
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+  const [login, setLogin] = useState('resurgent11@gmail.com');
+  const [password, setPassword] = useState('gR4MejnCDBinRUS');
   const terms = `<p>By proceeding, you agree to Verdict's
     <a href="https://verdict.org/terms-of-service/" title="Terms of Service">Terms of Service</a>
     &amp;

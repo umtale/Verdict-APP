@@ -6,6 +6,7 @@ export type GlobalState = {
   profile?: UserProfile;
   setAuth: (c: AuthData | null) => void;
   setProfile: (c: UserProfile) => void;
+  getProfile: () => Promise<UserProfile | null>;
 };
 
 const AppContext = React.createContext<GlobalState>({
@@ -13,6 +14,9 @@ const AppContext = React.createContext<GlobalState>({
   profile: undefined,
   setAuth: () => {},
   setProfile: () => {},
+  getProfile: () => {
+    return new Promise(() => null);
+  },
 });
 
 export default AppContext;

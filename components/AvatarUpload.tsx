@@ -105,16 +105,16 @@ export default class AvatarUpload extends React.Component<
     this.setState({ loading: true });
     this._startAnimation();
 
-    Api.post('profile/remove-avatar', {}).then(response => {
+    Api.post('profile/remove-avatar', {}).finally(() => {
       this.setState({
         loading: false,
         value: undefined,
         url: cdnUrl('assets/img/default/default-avatar-big.png', 86, 86),
       });
-      console.log(
-        '🚀 ~ file: AvatarUpload.tsx ~ line 65 ~ response',
-        response.data,
-      );
+
+      if (this.props.onDelete) {
+        this.props.onDelete();
+      }
     });
   }
 

@@ -11,7 +11,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Image,
   Pressable,
@@ -21,10 +21,8 @@ import {
 } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { AuthContext } from './AuthProvider';
 import { CustomDrawerContent } from './components/CustomDrawerContent';
 import AppContext from './context/context';
-import GlobalState from './context/GlobalState';
 import AddPost from './screens/AddPost';
 import Auth from './screens/Auth';
 import CategoryRoot from './screens/Category';
@@ -187,5 +185,3 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
 });
-
-// export default AppArea;

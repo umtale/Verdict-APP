@@ -1,14 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useProfile } from '../hooks/profile';
 import { cdnUrl } from '../helpers/url';
 import ProfilePosts from './profile/Posts';
 import { useNavigation } from '@react-navigation/core';
 import { ProfileSettings } from './profile/Settings';
-import { AxiosResponse } from 'axios';
-import Api from '../helpers/api';
-import { UserProfile } from '../types';
+import AppContext from '../context/context';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +23,7 @@ export default function ProfileRoot() {
 }
 
 function ProfileHome() {
-  const [profile] = useProfile();
+  const { profile } = useContext(AppContext);
   const navigation: any = useNavigation();
 
   return (

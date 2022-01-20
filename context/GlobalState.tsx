@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import React from 'react';
 import { Text } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -28,6 +29,7 @@ export default class GlobalState extends React.Component {
         // Configure axios headers
         Api.defaults.headers.common.Authorization = `Bearer ${auth.token}`;
         this.setState({ auth });
+        await this.getProfile();
       }
     } catch (error) {
       Promise.reject(error);
@@ -43,12 +45,26 @@ export default class GlobalState extends React.Component {
         // Configure axios headers
         Api.defaults.headers.common.Authorization = `Bearer ${auth.token}`;
         this.setState({ auth, loading: false });
+        await this.getProfile();
       } else {
         this.setState({ auth: null, loading: false });
       }
     }
 
     return this.state.auth;
+  }
+
+  async getProfile() {
+    if (this.state.auth) {
+      return await Api.get('profile/full', { data: null }).then(
+        (response: AxiosResponse<{ data: UserProfile }>) => {
+          this.setState({ profile: response.data.data });
+          return response.data.data;
+        },
+      );
+    } else {
+      return null;
+    }
   }
 
   setProfile = (profile: UserProfile) => {
@@ -67,6 +83,7 @@ export default class GlobalState extends React.Component {
           profile: this.state.profile,
           setAuth: this.setAuth.bind(this),
           setProfile: this.setProfile.bind(this),
+          getProfile: this.getProfile.bind(this),
         }}>
         {this.props.children}
       </Context.Provider>

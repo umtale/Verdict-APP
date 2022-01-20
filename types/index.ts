@@ -184,7 +184,7 @@ export type UserProfile = {
   bio: string;
   categories: [];
   commentsCount: number;
-  countryCode: number;
+  countryCode: string;
   countryCodeLetters: string;
   createdAt: string;
   email: string;
@@ -213,6 +213,38 @@ export type UserProfile = {
   url: string;
   verdictsCount: number;
   verified: boolean;
+};
+
+export type UserProfileSettings = {
+  avatar?: {
+    id: number;
+    name: string;
+    path: string;
+    size: {
+      height: number;
+      width: number;
+    };
+    source: string;
+    url: string;
+  };
+  email: string;
+  firstName: string;
+  lastName: string;
+  bio: string;
+  countryCode: string;
+  phone: string;
+  settings: {
+    email_visibility: string;
+    email_recive_point: string;
+    profile_visibility: string;
+    email_user_follow: string;
+    email_post_replies: string;
+    email_post_published: string;
+    email_verdict_replies: string;
+  };
+  twitterLink: string;
+  facebookLink: string;
+  linkedinLink: string;
 };
 
 export type AuthData = {

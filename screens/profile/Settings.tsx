@@ -1,28 +1,31 @@
-import { AxiosResponse } from 'axios';
-import React, { useRef } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import PhoneInput from 'react-native-phone-number-input';
 import AvatarUpload from '../../components/AvatarUpload';
 import RadioButton from '../../components/RadioButton';
-import Api from '../../helpers/api';
 import { wp } from '../../helpers/functions';
 import { globalStyles } from '../../helpers/globalStyles';
-import { UserProfile } from '../../types';
+import { UserProfileSettings } from '../../types';
+import AppContext from '../../context/context';
 
 interface ProfileSettingsState {
   loading: boolean;
-  data: UserProfile;
+  data: UserProfileSettings;
 }
 
 export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
+  static contextType = AppContext;
+
   constructor(props: any) {
     super(props);
     this.state = {
       loading: true,
       data: {
         avatar: undefined,
+        countryCode: '',
+        phone: '',
         email: '',
         firstName: '',
         lastName: '',
@@ -41,16 +44,16 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         linkedinLink: '',
       },
     };
-
-    this.loadProfile();
   }
 
-  loadProfile() {
-    Api.get('profile/full', { data: null })
-      .then((response: AxiosResponse<{ data: UserProfile }>) => {
-        this.setState({ data: response.data.data, loading: false });
-      })
-      .catch(_error => {});
+  componentDidMount() {
+    this.onUpdateProfile().then(() => {
+      this.setState({ data: this.context.profile, loading: false });
+    });
+  }
+
+  onUpdateProfile() {
+    return this.context.getProfile();
   }
 
   render() {
@@ -68,7 +71,8 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
       <ScrollView style={styles.container}>
         <AvatarUpload
           value={this.state.data.avatar?.path}
-          onUploadSuccess={this.loadProfile.bind(this)}
+          onUploadSuccess={this.onUpdateProfile.bind(this)}
+          onDelete={this.onUpdateProfile.bind(this)}
         />
         <Text style={styles.label}>Email</Text>
         <TextInput
@@ -82,6 +86,22 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
           onChangeText={text =>
             this.setState({ data: { ...this.state.data, email: text } })
           }
+        />
+        <Text style={styles.label}>Email visibility</Text>
+        <RadioButton
+          options={{ '1': 'public', '0': 'private' }}
+          value={this.state.data.settings.email_visibility}
+          onChange={(value: any) => {
+            this.setState({
+              data: {
+                ...this.state.data,
+                settings: {
+                  ...this.state.data.settings,
+                  email_visibility: value,
+                },
+              },
+            });
+          }}
         />
         <Text style={styles.label}>First Name</Text>
         <TextInput
@@ -187,6 +207,17 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         </Text>
         <RadioButton
           value={this.state.data.settings.email_post_replies}
+          onChange={(value: any) => {
+            this.setState({
+              data: {
+                ...this.state.data,
+                settings: {
+                  ...this.state.data.settings,
+                  email_post_replies: value,
+                },
+              },
+            });
+          }}
           options={{
             '1': 'immediately',
             '2': 'daily',
@@ -197,6 +228,17 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         <Text style={styles.label}>someone replies to my verdict/reply</Text>
         <RadioButton
           value={this.state.data.settings.email_verdict_replies}
+          onChange={(value: any) => {
+            this.setState({
+              data: {
+                ...this.state.data,
+                settings: {
+                  ...this.state.data.settings,
+                  email_verdict_replies: value,
+                },
+              },
+            });
+          }}
           options={{
             '1': 'immediately',
             '2': 'daily',
@@ -207,6 +249,17 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         <Text style={styles.label}>someone follows me</Text>
         <RadioButton
           value={this.state.data.settings.email_user_follow}
+          onChange={(value: any) => {
+            this.setState({
+              data: {
+                ...this.state.data,
+                settings: {
+                  ...this.state.data.settings,
+                  email_user_follow: value,
+                },
+              },
+            });
+          }}
           options={{
             '1': 'immediately',
             '2': 'daily',
@@ -217,6 +270,17 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         <Text style={styles.label}>my post is published</Text>
         <RadioButton
           value={this.state.data.settings.email_post_published}
+          onChange={(value: any) => {
+            this.setState({
+              data: {
+                ...this.state.data,
+                settings: {
+                  ...this.state.data.settings,
+                  email_post_published: value,
+                },
+              },
+            });
+          }}
           options={{
             '1': 'immediately',
             '2': 'daily',
@@ -227,6 +291,17 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
         <Text style={styles.label}>gained V-rep</Text>
         <RadioButton
           value={this.state.data.settings.email_recive_point}
+          onChange={(value: any) => {
+            this.setState({
+              data: {
+                ...this.state.data,
+                settings: {
+                  ...this.state.data.settings,
+                  email_recive_point: value,
+                },
+              },
+            });
+          }}
           options={{
             '1': 'immediately',
             '2': 'daily',
