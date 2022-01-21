@@ -15,7 +15,14 @@ interface ProfileSettingsState {
   data: UserProfileSettings;
 }
 
-export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
+interface ProfileSettingsProps {
+  navigation: any;
+}
+
+export class ProfileSettings extends React.Component<
+  ProfileSettingsProps,
+  ProfileSettingsState
+> {
   static contextType = AppContext;
 
   constructor(props: any) {
@@ -47,6 +54,11 @@ export class ProfileSettings extends React.Component<{}, ProfileSettingsState> {
   }
 
   componentDidMount() {
+    this.context.setHeaderLeftMode('back');
+    this.context.setHeaderBackCallback(() => {
+      this.props.navigation.goBack();
+    });
+
     this.onUpdateProfile().then(() => {
       this.setState({ data: this.context.profile, loading: false });
     });

@@ -11,12 +11,13 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Image,
   Pressable,
   StatusBar,
   StyleSheet,
+  Text,
   TouchableOpacity,
 } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
@@ -40,18 +41,39 @@ const headerSettings = {
 
 function Hamburger() {
   const navigation: any = useNavigation();
-  return (
-    <TouchableOpacity
-      style={styles.hamburger}
-      onPress={navigation.toggleDrawer}
-      activeOpacity={0.5}>
-      <Image
-        width={27}
-        height={27}
-        source={require('./static/hamburger.png')}
-      />
-    </TouchableOpacity>
-  );
+  const context = useContext(AppContext);
+
+  if (context.headerLeftMode === 'menu') {
+    return (
+      <TouchableOpacity
+        style={styles.hamburger}
+        onPress={navigation.toggleDrawer}
+        activeOpacity={0.5}>
+        <Image
+          width={27}
+          height={27}
+          source={require('./static/hamburger.png')}
+        />
+      </TouchableOpacity>
+    );
+  } else {
+    return (
+      <TouchableOpacity
+        style={styles.hamburger}
+        onPress={() => {
+          context.setHeaderLeftMode('menu');
+          if (context.headerBackCallback) {
+            context.headerBackCallback();
+            context.setHeaderBackCallback(null);
+          } else {
+            navigation.goBack();
+          }
+        }}
+        activeOpacity={0.5}>
+        <Text style={styles.backLink}>Back</Text>
+      </TouchableOpacity>
+    );
+  }
 }
 
 function LogoTitle() {
@@ -183,5 +205,10 @@ const styles = StyleSheet.create({
   },
   hamburger: {
     marginLeft: 15,
+  },
+  backLink: {
+    color: '#ff4242',
+    fontWeight: '600',
+    fontSize: 17,
   },
 });

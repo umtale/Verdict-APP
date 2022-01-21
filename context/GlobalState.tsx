@@ -6,16 +6,40 @@ import Api from '../helpers/api';
 import { AuthData, UserProfile } from '../types';
 import Context from './context';
 
-export default class GlobalState extends React.Component {
-  state = {
-    loading: true,
-    auth: null,
-    profile: undefined,
-  };
+type GlobalStateState = {
+  auth: AuthData | null;
+  profile?: UserProfile;
+  loading: boolean;
+  headerLeftMode: 'menu' | 'back';
+  headerBackCallback: null | (() => void);
+};
 
+export default class GlobalState extends React.Component<{}, GlobalStateState> {
   constructor(props: any) {
     super(props);
+    this.state = {
+      loading: true,
+      headerLeftMode: 'menu',
+      auth: null,
+      profile: undefined,
+      headerBackCallback: null,
+    };
+
     this.getAuth();
+
+    Api.interceptors.response.use(
+      response => {
+        return response;
+      },
+      error => {
+        if (error.response.status === 401 && this.state.auth?.token) {
+          this.setAuth(null);
+        }
+        // Any status codes that falls outside the range of 2xx cause this function to trigger
+        // Do something with response error
+        return Promise.reject(error);
+      },
+    );
   }
 
   async setAuth(auth: AuthData | null) {
@@ -37,39 +61,56 @@ export default class GlobalState extends React.Component {
   }
 
   async getAuth() {
-    if (!this.state.auth) {
-      const authData = await EncryptedStorage.getItem('auth');
+    try {
+      if (!this.state.auth) {
+        const authData = await EncryptedStorage.getItem('auth');
 
-      if (authData) {
-        const auth = JSON.parse(authData || '{}');
-        // Configure axios headers
-        Api.defaults.headers.common.Authorization = `Bearer ${auth.token}`;
-        this.setState({ auth, loading: false });
-        await this.getProfile();
-      } else {
-        this.setState({ auth: null, loading: false });
+        if (authData) {
+          const auth = JSON.parse(authData || '{}');
+          // Configure axios headers
+          Api.defaults.headers.common.Authorization = `Bearer ${auth.token}`;
+          this.setState({ auth, loading: false });
+          await this.getProfile();
+        } else {
+          this.setState({ auth: null, loading: false });
+        }
       }
+    } catch (error) {
+      Promise.reject(error);
     }
 
     return this.state.auth;
   }
 
   async getProfile() {
-    if (this.state.auth) {
-      return await Api.get('profile/full', { data: null }).then(
-        (response: AxiosResponse<{ data: UserProfile }>) => {
-          this.setState({ profile: response.data.data });
-          return response.data.data;
-        },
-      );
-    } else {
+    try {
+      if (this.state.auth) {
+        return await Api.get('profile/full', { data: null }).then(
+          (response: AxiosResponse<{ data: UserProfile }>) => {
+            this.setState({ profile: response.data.data });
+            return response.data.data;
+          },
+        );
+      } else {
+        return null;
+      }
+    } catch (error) {
+      Promise.reject(error);
       return null;
     }
+  }
+
+  setHeaderLeftMode(mode: GlobalStateState['headerLeftMode']) {
+    this.setState({ headerLeftMode: mode });
   }
 
   setProfile = (profile: UserProfile) => {
     this.setState({ profile });
   };
+
+  setHeaderBackCallback(cb: null | (() => void)) {
+    this.setState({ headerBackCallback: cb });
+  }
 
   render() {
     if (this.state.loading) {
@@ -81,9 +122,13 @@ export default class GlobalState extends React.Component {
         value={{
           auth: this.state.auth,
           profile: this.state.profile,
+          headerLeftMode: this.state.headerLeftMode,
+          headerBackCallback: this.state.headerBackCallback,
+          setHeaderBackCallback: this.setHeaderBackCallback.bind(this),
           setAuth: this.setAuth.bind(this),
           setProfile: this.setProfile.bind(this),
           getProfile: this.getProfile.bind(this),
+          setHeaderLeftMode: this.setHeaderLeftMode.bind(this),
         }}>
         {this.props.children}
       </Context.Provider>
