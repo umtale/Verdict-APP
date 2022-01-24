@@ -9,6 +9,8 @@ import { wp } from '../../helpers/functions';
 import { globalStyles } from '../../helpers/globalStyles';
 import { UserProfileSettings } from '../../types';
 import AppContext from '../../context/context';
+import Api from '../../helpers/api';
+import Toast from 'react-native-toast-message';
 
 interface ProfileSettingsState {
   loading: boolean;
@@ -56,7 +58,17 @@ export class ProfileSettings extends React.Component<
   componentDidMount() {
     this.context.setHeaderLeftMode('back');
     this.context.setHeaderBackCallback(() => {
+      this.context.hideRightButton();
       this.props.navigation.goBack();
+    });
+
+    this.context.showRightButton(() => {
+      Api.patch('profile', this.state.data).then((response: any) => {
+        Toast.show({
+          type: 'success',
+          text1: response.data.message,
+        });
+      });
     });
 
     this.onUpdateProfile().then(() => {
@@ -138,6 +150,7 @@ export class ProfileSettings extends React.Component<
           style={[globalStyles.input, globalStyles.textarea]}
           multiline={true}
           textAlignVertical="top"
+          autoCapitalize="none"
           placeholder="Tell something about yourself..."
           value={this.state.data.bio}
           onChangeText={text =>

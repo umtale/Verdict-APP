@@ -37,7 +37,19 @@ const Drawer = createDrawerNavigator();
 const headerSettings = {
   headerTitle: (props: any) => <LogoTitle {...props} />,
   headerLeft: () => <Hamburger />,
+  headerRight: () => <HeaderRight />,
 };
+
+function LogoTitle() {
+  return (
+    <Pressable
+      onPress={() => {
+        EventRegister.emit('ScrollToTop');
+      }}>
+      <Image width={189} height={27} source={require('./static/logo.jpg')} />
+    </Pressable>
+  );
+}
 
 function Hamburger() {
   const navigation: any = useNavigation();
@@ -70,21 +82,31 @@ function Hamburger() {
           }
         }}
         activeOpacity={0.5}>
-        <Text style={styles.backLink}>Back</Text>
+        <Text style={styles.headerLink}>Back</Text>
       </TouchableOpacity>
     );
   }
 }
 
-function LogoTitle() {
-  return (
-    <Pressable
-      onPress={() => {
-        EventRegister.emit('ScrollToTop');
-      }}>
-      <Image width={189} height={27} source={require('./static/logo.jpg')} />
-    </Pressable>
-  );
+function HeaderRight() {
+  const context = useContext(AppContext);
+
+  if (context.headerRightCallback) {
+    return (
+      <TouchableOpacity
+        style={styles.hamburger}
+        onPress={() => {
+          if (context.headerRightCallback) {
+            context.headerRightCallback();
+          }
+        }}
+        activeOpacity={0.5}>
+        <Text style={[styles.headerLink, styles.saveLink]}>Save</Text>
+      </TouchableOpacity>
+    );
+  } else {
+    return <></>;
+  }
 }
 
 const baseNavigator = () => {
@@ -145,11 +167,6 @@ const baseNavigatorLoggedIn = () => {
   );
 };
 
-// const AppArea = () => {
-//   const { auth } = useContext(AuthContext);
-//   // const isDarkMode = useColorScheme() === 'dark';
-// };
-
 export default class AppArea extends React.Component {
   static contextType = AppContext;
 
@@ -206,9 +223,12 @@ const styles = StyleSheet.create({
   hamburger: {
     marginLeft: 15,
   },
-  backLink: {
+  headerLink: {
     color: '#ff4242',
     fontWeight: '600',
     fontSize: 17,
+  },
+  saveLink: {
+    marginRight: 15,
   },
 });

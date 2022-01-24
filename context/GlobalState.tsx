@@ -12,6 +12,7 @@ type GlobalStateState = {
   loading: boolean;
   headerLeftMode: 'menu' | 'back';
   headerBackCallback: null | (() => void);
+  headerRightCallback: null | (() => void);
 };
 
 export default class GlobalState extends React.Component<{}, GlobalStateState> {
@@ -23,6 +24,7 @@ export default class GlobalState extends React.Component<{}, GlobalStateState> {
       auth: null,
       profile: undefined,
       headerBackCallback: null,
+      headerRightCallback: null,
     };
 
     this.getAuth();
@@ -112,6 +114,14 @@ export default class GlobalState extends React.Component<{}, GlobalStateState> {
     this.setState({ headerBackCallback: cb });
   }
 
+  showRightButton(cb: () => void) {
+    this.setState({ headerRightCallback: cb });
+  }
+
+  hideRightButton() {
+    this.setState({ headerRightCallback: null });
+  }
+
   render() {
     if (this.state.loading) {
       return <Text>Loading...</Text>;
@@ -124,11 +134,14 @@ export default class GlobalState extends React.Component<{}, GlobalStateState> {
           profile: this.state.profile,
           headerLeftMode: this.state.headerLeftMode,
           headerBackCallback: this.state.headerBackCallback,
+          headerRightCallback: this.state.headerRightCallback,
           setHeaderBackCallback: this.setHeaderBackCallback.bind(this),
           setAuth: this.setAuth.bind(this),
           setProfile: this.setProfile.bind(this),
           getProfile: this.getProfile.bind(this),
           setHeaderLeftMode: this.setHeaderLeftMode.bind(this),
+          showRightButton: this.showRightButton.bind(this),
+          hideRightButton: this.hideRightButton.bind(this),
         }}>
         {this.props.children}
       </Context.Provider>

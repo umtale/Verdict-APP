@@ -8,6 +8,7 @@
  * @format
  */
 import React from 'react';
+import Toast from 'react-native-toast-message';
 import AppArea from './AppArea';
 import GlobalState from './context/GlobalState';
 
@@ -15,6 +16,7 @@ const App = () => {
   return (
     <GlobalState>
       <AppArea />
+      <Toast />
     </GlobalState>
   );
 };
