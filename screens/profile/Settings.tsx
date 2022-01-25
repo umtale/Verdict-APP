@@ -80,6 +80,12 @@ export class ProfileSettings extends React.Component<
     return this.context.getProfile();
   }
 
+  openChangePasswordModal() {
+    this.props.navigation.navigate('ProfileRoot', {
+      screen: 'ChangePassword',
+    });
+  }
+
   render() {
     const phoneUtil = PhoneNumberUtil.getInstance();
     if (this.state.loading) {
@@ -191,7 +197,9 @@ export class ProfileSettings extends React.Component<
           }}
         />
         <Text style={styles.label}>Password</Text>
-        <Pressable style={styles.changePasswordButton}>
+        <Pressable
+          style={styles.changePasswordButton}
+          onPress={this.openChangePasswordModal.bind(this)}>
           <Text style={styles.smallButton}>Change password</Text>
         </Pressable>
         <Text style={styles.sectionTitle}>Social profiles</Text>

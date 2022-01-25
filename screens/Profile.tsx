@@ -6,6 +6,7 @@ import ProfilePosts from './profile/Posts';
 import { useNavigation } from '@react-navigation/core';
 import { ProfileSettings } from './profile/Settings';
 import AppContext from '../context/context';
+import { ChangePassword } from './profile/ChangePassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,13 @@ export default function ProfileRoot() {
       <Stack.Screen name="ProfileHome" component={ProfileHome} />
       <Stack.Screen name="ProfilePosts" component={ProfilePosts} />
       <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
+          options={{ headerShown: false }}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }
