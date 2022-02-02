@@ -32,6 +32,8 @@
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
 			</dict>
 		</dict>
 	</dict>
@@ -49,5 +51,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Take pictures for certain activities</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Select pictures for certain activities</string>
 </dict>
 </plist>

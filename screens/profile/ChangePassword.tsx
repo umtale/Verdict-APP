@@ -5,9 +5,21 @@ import { globalStyles } from '../../helpers/globalStyles';
 import Button from '../../components/Button';
 
 interface ChangePasswordState {
-  oldPassword: string;
-  newPassword: string;
-  newConfirmPassword: string;
+  oldPassword: {
+    value: string;
+    error: string;
+    valid: boolean;
+  };
+  newPassword: {
+    value: string;
+    error: string;
+    valid: boolean;
+  };
+  newConfirmPassword: {
+    value: string;
+    error: string;
+    valid: boolean;
+  };
 }
 
 export class ChangePassword extends React.Component<
@@ -17,10 +29,44 @@ export class ChangePassword extends React.Component<
   constructor(props: { navigation: NavigationProp<any> }) {
     super(props);
     this.state = {
-      oldPassword: '',
-      newPassword: '',
-      newConfirmPassword: '',
+      oldPassword: {
+        value: '',
+        error: '',
+        valid: false,
+      },
+      newPassword: {
+        value: '',
+        error: '',
+        valid: false,
+      },
+      newConfirmPassword: {
+        value: '',
+        error: '',
+        valid: false,
+      },
     };
+  }
+
+  validate() {
+    let valid = false;
+
+    if (
+      this.state.oldPassword.value === '' ||
+      this.state.newPassword.value === '' ||
+      this.state.newConfirmPassword.value === ''
+    ) {
+      valid = false;
+    } else {
+      valid = true;
+    }
+
+    return valid;
+  }
+
+  submit() {
+    if (this.validate()) {
+
+    }
   }
 
   render() {
@@ -44,7 +90,7 @@ export class ChangePassword extends React.Component<
           textContentType="password"
           onChangeText={text =>
             this.setState({
-              oldPassword: text,
+              oldPassword: { ...this.state.oldPassword, value: text },
             })
           }
         />
@@ -57,7 +103,7 @@ export class ChangePassword extends React.Component<
           textContentType="newPassword"
           onChangeText={text =>
             this.setState({
-              newPassword: text,
+              newPassword: { ...this.state.newPassword, value: text },
             })
           }
         />
@@ -70,14 +116,17 @@ export class ChangePassword extends React.Component<
           textContentType="newPassword"
           onChangeText={text =>
             this.setState({
-              newConfirmPassword: text,
+              newConfirmPassword: {
+                ...this.state.newConfirmPassword,
+                value: text,
+              },
             })
           }
         />
         <Button
           text="Change Password"
           pressable={{
-            onPress: () => {},
+            onPress: this.submit.bind(this),
           }}
         />
       </View>

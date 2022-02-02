@@ -163,6 +163,11 @@ const baseNavigatorLoggedIn = () => {
         component={ProfileRoot}
         options={headerSettings}
       />
+      <Drawer.Screen
+        name="AddPost"
+        component={AddPost}
+        options={headerSettings}
+      />
     </Drawer.Navigator>
   );
 };

@@ -1,45 +1,65 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import Editor from '../components/Editor';
+import { LimitedField } from '../components/LimitedField';
 
-export default function AddPost() {
-  return (
-    <View style={styles.container}>
-      <Editor />
-    </View>
-  );
+export default class PostEditor extends React.Component {
+  constructor(props: any) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <ScrollView style={styles.container}>
+        <Text style={styles.label}>
+          Title
+          <Text style={styles.required}>*</Text>
+        </Text>
+        <LimitedField
+          min={50}
+          max={120}
+          value={''}
+          placeholder="Minimum title length: 50 characters"
+          onChange={value => {
+            console.log('🚀 ~ file: AddPost.tsx ~ line 25 ~ value', value);
+          }}
+        />
+        <Text style={styles.label}>Subtitle</Text>
+        <LimitedField
+          min={80}
+          max={160}
+          value={''}
+          placeholder="Minimum subtitle length: 80 characters"
+          onChange={value => {
+            console.log('🚀 ~ file: AddPost.tsx ~ line 25 ~ value', value);
+          }}
+        />
+        <Text style={styles.label}>
+          Post Content
+          <Text style={styles.required}>*</Text>
+        </Text>
+        <Editor />
+      </ScrollView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 30,
     paddingHorizontal: 20,
+    backgroundColor: '#fff',
   },
-  close: {
-    position: 'absolute',
-    width: 40,
-    height: 40,
-    top: 10,
-    right: 10,
-    padding: 10,
-    transform: [
-      {
-        rotateZ: '45deg',
-      },
-    ],
-    zIndex: 5,
+  label: {
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 5,
   },
-  closeDash: {
-    width: 25,
-    height: 3,
-    backgroundColor: '#ff4242',
+  required: {
+    color: '#ff4242',
   },
-  closeDashFirst: {
-    top: 3,
-    transform: [
-      {
-        rotateZ: '90deg',
-      },
-    ],
+  editor: {
+    marginBottom: 15,
   },
 });
