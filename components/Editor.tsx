@@ -45,7 +45,7 @@ export default class Editor extends React.Component<{}, EditorState> {
     `;
 
     return (
-      <View>
+      <View style={styles.container}>
         <WebView
           originWhitelist={['*']}
           source={{ uri: 'http://localhost:3001/app/editor/' }}
@@ -60,6 +60,9 @@ export default class Editor extends React.Component<{}, EditorState> {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 15,
+  },
   editor: {
     borderColor: '#ddd',
     borderWidth: 1,

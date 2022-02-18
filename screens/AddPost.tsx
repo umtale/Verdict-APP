@@ -1,17 +1,35 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Editor from '../components/Editor';
 import { LimitedField } from '../components/LimitedField';
+import TagsInput from '../components/TagsInput';
+import Api from '../helpers/api';
 
 export default class PostEditor extends React.Component {
   constructor(props: any) {
     super(props);
+
+    this.state = {
+      categories: [],
+    };
+  }
+
+  componentDidMount() {
+    Api.get('categories').then(response => {
+      // response.data
+      console.log(
+        '🚀 ~ file: AddPost.tsx ~ line 20 ~ response.data',
+        response.data,
+      );
+    });
   }
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <KeyboardAwareScrollView
+        style={styles.scrollContainer}
+        contentContainerStyle={styles.container}>
         <Text style={styles.label}>
           Title
           <Text style={styles.required}>*</Text>
@@ -40,16 +58,20 @@ export default class PostEditor extends React.Component {
           <Text style={styles.required}>*</Text>
         </Text>
         <Editor />
-      </ScrollView>
+        <Text style={styles.label}>Tags</Text>
+        <TagsInput />
+      </KeyboardAwareScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    backgroundColor: '#fff',
+  },
   container: {
     paddingVertical: 30,
     paddingHorizontal: 20,
-    backgroundColor: '#fff',
   },
   label: {
     fontSize: 16,

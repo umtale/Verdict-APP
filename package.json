@@ -36,6 +36,7 @@
     "react-native-event-listeners": "^1.0.7",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-picker": "^4.4.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-pell-rich-editor": "^1.8.6",
     "react-native-phone-number-input": "^2.1.0",
     "react-native-reanimated": "^2.1.0",
@@ -43,8 +44,7 @@
     "react-native-screens": "^3.2.0",
     "react-native-toast-message": "^2.1.1",
     "react-native-webview": "^11.17.1",
-    "react-native-youtube": "^2.0.1",
-    "react-select": "^5.2.2"
+    "react-native-youtube": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

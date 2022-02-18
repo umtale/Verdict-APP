@@ -257,3 +257,11 @@ export type AuthData = {
   token: string;
   refreshToken: string;
 };
+
+export type PostTag = {
+  id: string;
+  name: string;
+  slug: string;
+  url: string;
+  usesCount: number;
+};
