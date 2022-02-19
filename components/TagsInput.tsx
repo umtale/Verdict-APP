@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Api from '../helpers/api';
 import { PostTag } from '../types';
@@ -108,12 +108,17 @@ export default class TagsInput extends React.Component<{}, TagsInputState> {
             );
 
             return (
-              <View key={index} style={styles.tagListItem}>
+              <Pressable
+                key={index}
+                style={styles.tagListItem}
+                onPress={() => {
+                  this.addSavedTag(tag);
+                }}>
                 <Text style={styles.tagListItemTextOccurence}>
                   {occurrence}
                 </Text>
                 <Text>{tag.name.replace(occurrence, '')}</Text>
-              </View>
+              </Pressable>
             );
           })}
         </ScrollView>
@@ -123,9 +128,87 @@ export default class TagsInput extends React.Component<{}, TagsInputState> {
     }
   }
 
+  addSavedTag(tag: PostTag) {
+    const alreadySelected = this.state.selected.find(selectedTag => {
+      return selectedTag.name.toLowerCase() === tag.name.toLowerCase();
+    });
+
+    if (alreadySelected) {
+      this.setState({ value: '', showTagList: false, tagsList: [] });
+    } else {
+      const selected = [
+        ...this.state.selected,
+        { id: parseInt(tag.id, 10), name: tag.name },
+      ];
+
+      this.setState({ selected, value: '', showTagList: false, tagsList: [] });
+    }
+  }
+
+  addNewTag() {
+    const existedTag = this.state.tagsList.find(tag => {
+      return tag.name.toLowerCase() === this.state.value.toLowerCase();
+    });
+
+    const alreadySelected = this.state.selected.find(tag => {
+      return tag.name.toLowerCase() === this.state.value.toLowerCase();
+    });
+
+    if (alreadySelected) {
+      this.setState({
+        value: '',
+        message: null,
+      });
+    } else {
+      const newTag = {
+        id: existedTag ? parseInt(existedTag.id, 10) : undefined,
+        name: existedTag ? existedTag.name : this.state.value,
+      };
+
+      this.setState({
+        selected: [...this.state.selected, newTag],
+        value: '',
+        message: null,
+      });
+    }
+  }
+
+  deleteTag(index: number) {
+    let selected = this.state.selected;
+    delete selected[index];
+    this.setState({ selected });
+  }
+
   render(): React.ReactNode {
     return (
       <View>
+        <View style={styles.selectedList}>
+          {this.state.selected.map((tag, index) => {
+            return (
+              <View key={index} style={styles.selectedTag}>
+                <Text style={styles.selectedTagText}>{tag.name}</Text>
+                <Pressable
+                  style={styles.deleteButton}
+                  onPress={() => {
+                    this.deleteTag(index);
+                  }}>
+                  <View
+                    style={[
+                      styles.deleteButtonDash,
+                      styles.deleteButtonDashFirst,
+                    ]}
+                  />
+                  <View
+                    style={[
+                      styles.deleteButtonDash,
+                      styles.deleteButtonDashSecond,
+                    ]}
+                  />
+                </Pressable>
+              </View>
+            );
+          })}
+        </View>
         <View style={styles.inputContainer}>
           <View style={styles.tagsContainer} />
           <TextInput
@@ -134,6 +217,7 @@ export default class TagsInput extends React.Component<{}, TagsInputState> {
             value={this.state.value}
             onChangeText={this.onInputChange.bind(this)}
             blurOnSubmit={false}
+            autoCorrect={false}
             onBlur={() => {
               this.setState({
                 value: '',
@@ -142,9 +226,7 @@ export default class TagsInput extends React.Component<{}, TagsInputState> {
                 showTagList: false,
               });
             }}
-            onSubmitEditing={e => {
-              console.log('🚀 ~ file: TagsInput.tsx ~ line 71 ~ e', e);
-            }}
+            onSubmitEditing={this.addNewTag.bind(this)}
           />
         </View>
         {this.state.message && (
@@ -187,5 +269,51 @@ const styles = StyleSheet.create({
   },
   tagListItemTextOccurence: {
     fontWeight: '600',
+  },
+  selectedList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  selectedTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingLeft: 12,
+    backgroundColor: '#ff4242',
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  selectedTagText: {
+    color: '#fff',
+    fontSize: 16,
+    marginRight: 10,
+  },
+  deleteButton: {
+    width: 35,
+    height: 25,
+    borderLeftColor: '#fdaeae',
+    borderLeftWidth: 1,
+  },
+  deleteButtonDash: {
+    width: 16,
+    height: 2,
+    position: 'absolute',
+    top: 11,
+    left: 8,
+    backgroundColor: '#fff',
+  },
+  deleteButtonDashFirst: {
+    transform: [
+      {
+        rotateZ: '45deg',
+      },
+    ],
+  },
+  deleteButtonDashSecond: {
+    transform: [
+      {
+        rotateZ: '-45deg',
+      },
+    ],
   },
 });

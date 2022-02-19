@@ -28,6 +28,7 @@ export default class PostEditor extends React.Component {
   render() {
     return (
       <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
         style={styles.scrollContainer}
         contentContainerStyle={styles.container}>
         <Text style={styles.label}>
@@ -68,6 +69,7 @@ export default class PostEditor extends React.Component {
 const styles = StyleSheet.create({
   scrollContainer: {
     backgroundColor: '#fff',
+    flex: 1,
   },
   container: {
     paddingVertical: 30,
