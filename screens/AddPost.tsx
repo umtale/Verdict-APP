@@ -1,12 +1,19 @@
+import { AxiosResponse } from 'axios';
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Editor from '../components/Editor';
 import { LimitedField } from '../components/LimitedField';
+import Select from '../components/Select';
 import TagsInput from '../components/TagsInput';
 import Api from '../helpers/api';
+import { PostCategory } from '../types';
 
-export default class PostEditor extends React.Component {
+interface PostEditorState {
+  categories: PostCategory[];
+}
+
+export default class PostEditor extends React.Component<{}, PostEditorState> {
   constructor(props: any) {
     super(props);
 
@@ -16,13 +23,11 @@ export default class PostEditor extends React.Component {
   }
 
   componentDidMount() {
-    Api.get('categories').then(response => {
-      // response.data
-      console.log(
-        '🚀 ~ file: AddPost.tsx ~ line 20 ~ response.data',
-        response.data,
-      );
-    });
+    Api.get('categories').then(
+      (response: AxiosResponse<{ data: PostCategory[] }>) => {
+        this.setState({ categories: response.data.data });
+      },
+    );
   }
 
   render() {
@@ -59,6 +64,15 @@ export default class PostEditor extends React.Component {
           <Text style={styles.required}>*</Text>
         </Text>
         <Editor />
+        <Text style={styles.label}>Category</Text>
+        <Select
+          options={this.state.categories.map(category => {
+            return {
+              label: category.name,
+              value: category.id,
+            };
+          })}
+        />
         <Text style={styles.label}>Tags</Text>
         <TagsInput />
       </KeyboardAwareScrollView>

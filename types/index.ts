@@ -258,6 +258,15 @@ export type AuthData = {
   refreshToken: string;
 };
 
+export type PostCategory = {
+  displayInGoogleNews: boolean;
+  id: string;
+  name: string;
+  slug: string;
+  url: string;
+  usesCount: number;
+};
+
 export type PostTag = {
   id: string;
   name: string;
