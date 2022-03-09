@@ -37,7 +37,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
       loading: false,
       options: props.options,
       message: null,
-      showDropdown: true,
+      showDropdown: false,
     };
   }
 
