@@ -16,10 +16,6 @@ interface SelectState {
     value: any;
     label: string;
   };
-  options: {
-    value: any;
-    label: string;
-  }[];
   loading: boolean;
   message: string | null;
   showDropdown: boolean;
@@ -35,17 +31,16 @@ export default class Select extends React.Component<SelectProps, SelectState> {
         label: '',
       },
       loading: false,
-      options: props.options,
       message: null,
       showDropdown: false,
     };
   }
 
   renderOptionsList() {
-    if (this.state.showDropdown && this.state.options.length) {
+    if (this.state.showDropdown && this.props.options.length) {
       return (
         <ScrollView style={styles.listContainer}>
-          {this.state.options.map((option, index) => {
+          {this.props.options.map((option, index) => {
             return (
               <Pressable
                 key={index}

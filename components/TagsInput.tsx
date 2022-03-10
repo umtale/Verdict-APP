@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     borderWidth: 1,
     borderColor: '#ddd',
+    marginBottom: 15,
   },
   input: {
     paddingHorizontal: 15,

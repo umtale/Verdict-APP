@@ -1,12 +1,14 @@
 import { AxiosResponse } from 'axios';
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, TextInput } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Editor from '../components/Editor';
+import ImageUpload from '../components/ImageUpload';
 import { LimitedField } from '../components/LimitedField';
 import Select from '../components/Select';
 import TagsInput from '../components/TagsInput';
 import Api from '../helpers/api';
+import { globalStyles } from '../helpers/globalStyles';
 import { PostCategory } from '../types';
 
 interface PostEditorState {
@@ -64,7 +66,10 @@ export default class PostEditor extends React.Component<{}, PostEditorState> {
           <Text style={styles.required}>*</Text>
         </Text>
         <Editor />
-        <Text style={styles.label}>Category</Text>
+        <Text style={styles.label}>
+          Category
+          <Text style={styles.required}>*</Text>
+        </Text>
         <Select
           options={this.state.categories.map(category => {
             return {
@@ -73,8 +78,25 @@ export default class PostEditor extends React.Component<{}, PostEditorState> {
             };
           })}
         />
-        <Text style={styles.label}>Tags</Text>
+        <Text style={styles.label}>
+          Tags
+          <Text style={styles.required}>*</Text>
+        </Text>
         <TagsInput />
+        <Text style={styles.label}>
+          Featured image
+          <Text style={styles.required}>*</Text>
+        </Text>
+        <ImageUpload />
+        <Text style={styles.label}>
+          Featured Image source (domain)
+          <Text style={styles.required}>*</Text>
+        </Text>
+        <TextInput
+          style={globalStyles.input}
+          autoCapitalize="none"
+          placeholder="e.g. Instagram, Youtube, etc."
+        />
       </KeyboardAwareScrollView>
     );
   }
